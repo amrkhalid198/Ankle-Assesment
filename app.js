@@ -451,21 +451,24 @@
     // ── Category bars ──
     renderCategoryBars(categories);
 
-    // ── Insights ──
-    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
+    // ── Section 1: Clinical Diagnosis ──
+    $('diagnosisText').innerHTML = ScoringEngine.getDiagnosis(tier).replace(/\n/g, '<br>');
 
-    // ── Action steps ──
-    var steps = ScoringEngine.getActionableSteps(tier);
-    $('actionStepsList').innerHTML = steps.map(function (s, i) {
+    // ── Section 2: Reality Check ──
+    $('realityCheckText').innerHTML = ScoringEngine.getRealityCheck(tier).replace(/\n/g, '<br>');
+
+    // ── Section 3: Rehabilitation Blueprint ──
+    var phases = ScoringEngine.getBlueprint(tier);
+    $('blueprintList').innerHTML = phases.map(function (p, i) {
       return '<div class="action-step animate-in" style="animation-delay:' +
         (0.8 + i * 0.15) + 's;">' +
         '<div class="action-step-number">' + (i + 1) + '</div>' +
-        '<h4>' + s.title + '</h4>' +
-        '<p>' + s.description + '</p></div>';
+        '<h4>' + p.title + '</h4>' +
+        '<p>' + p.description.replace(/\n/g, '<br>') + '</p></div>';
     }).join('');
 
-    // ── CTA ──
-    $('ctaText').textContent = ScoringEngine.getCTAText(tier);
+    // ── Section 4: CTA ──
+    $('ctaText').innerHTML = ScoringEngine.getCTAText(tier).replace(/\n/g, '<br>');
   }
 
   // ── Animated counter + ring fill ──
