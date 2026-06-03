@@ -3,31 +3,57 @@
 // Handles score calculation, tier classification,
 // personalized insights, and actionable recommendations.
 // Uses I18n for all user-facing text.
+//
+// ── SCORING BREAKDOWN (Total: 100) ──────────
+//
+//  Category      | Source                  | Max
+// ───────────────|─────────────────────────|─────
+//  History       | sprain_count (10)       |  30
+//                | last_sprain  (10)       |
+//                | giving_way   (10)       |
+// ───────────────|─────────────────────────|─────
+//  Confidence    | movement_confidence(10) |  20
+//                | fear_reinjury      (10) |
+// ───────────────|─────────────────────────|─────
+//  Balance       | balance_hold (timer 30s)|  20
+// ───────────────|─────────────────────────|─────
+//  Endurance     | calf_raises  (counter)  |  15
+// ───────────────|─────────────────────────|─────
+//  Power         | sidehop_result (option) |  15
+// ───────────────|─────────────────────────|─────
+//                                     TOTAL: 100
+//
+// ── TIER RANGES ─────────────────────────────
+//  Severe:   0–30  |  Moderate: 31–55
+//  Mild:    56–75  |  Optimal:  76–100
 // ============================================
 
 const ScoringEngine = {
 
   // ------------------------------------------
   // Physical-test scoring thresholds
+  // Timer max = 30s, counter is uncapped
   // ------------------------------------------
   physicalTests: {
     balance_hold: {
+      // Single-leg balance with eyes closed (max 30 seconds)
       thresholds: [
-        { min: 45, score: 20 },
-        { min: 30, score: 15 },
-        { min: 15, score: 8  },
-        { min: 0,  score: 3  }
+        { min: 28, score: 20 },   // Excellent — near-full 30s hold
+        { min: 18, score: 15 },   // Good — solid hold
+        { min: 8,  score: 8  },   // Fair — moderate control
+        { min: 0,  score: 3  }    // Poor — minimal/no hold
       ]
     },
     calf_raises: {
+      // Single-leg calf raise to failure (reps)
       thresholds: [
-        { min: 25, score: 15 },
-        { min: 18, score: 11 },
-        { min: 10, score: 6  },
-        { min: 0,  score: 2  }
+        { min: 25, score: 15 },   // Excellent endurance
+        { min: 18, score: 11 },   // Good endurance
+        { min: 10, score: 6  },   // Fair endurance
+        { min: 0,  score: 2  }    // Poor endurance
       ]
     }
-    // sidehop_result is scored directly from the user's option selection
+    // sidehop_result is scored directly from option selection: 15 / 10 / 5 / 2
   },
 
   // ------------------------------------------
@@ -143,47 +169,42 @@ const ScoringEngine = {
   },
 
   // ------------------------------------------
-  // Personalized insight paragraphs
+  // Section 1: Clinical Diagnosis
   // ------------------------------------------
-  getInsights(tier, categories) {
-    let text = I18n.t('insight.' + tier.id);
-
-    // Append weakest-category callout
-    const weakest = Object.entries(categories)
-      .sort((a, b) => a[1].percentage - b[1].percentage)[0];
-
-    if (weakest[1].percentage < 50) {
-      text += I18n.t('insight.weakest')
-        .replace('{label}', weakest[1].label)
-        .replace('{pct}', weakest[1].percentage);
-    }
-
-    return text;
+  getDiagnosis(tier) {
+    return I18n.t('diagnosis.' + tier.id);
   },
 
   // ------------------------------------------
-  // 3 actionable steps per tier
+  // Section 2: Reality Check
   // ------------------------------------------
-  getActionableSteps(tier) {
+  getRealityCheck(tier) {
+    return I18n.t('realityCheck.' + tier.id);
+  },
+
+  // ------------------------------------------
+  // Section 3: Rehabilitation Blueprint (3 phases)
+  // ------------------------------------------
+  getBlueprint(tier) {
     var tierId = tier.id;
     return [
       {
-        title: I18n.t('action.' + tierId + '.1.title'),
-        description: I18n.t('action.' + tierId + '.1.desc')
+        title: I18n.t('results.phase1.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase1')
       },
       {
-        title: I18n.t('action.' + tierId + '.2.title'),
-        description: I18n.t('action.' + tierId + '.2.desc')
+        title: I18n.t('results.phase2.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase2')
       },
       {
-        title: I18n.t('action.' + tierId + '.3.title'),
-        description: I18n.t('action.' + tierId + '.3.desc')
+        title: I18n.t('results.phase3.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase3')
       }
     ];
   },
 
   // ------------------------------------------
-  // CTA copy per tier
+  // Section 4: CTA copy per tier
   // ------------------------------------------
   getCTAText(tier) {
     return I18n.t('cta.' + tier.id);
