@@ -50,9 +50,18 @@
   // ============================================
   // Core Navigation (Main Test Flow)
   // ============================================
+  // Step indices for physical tests
+  const BALANCE_STEP  = 7;
+  const CALFRAISE_STEP = 8;
+
   function goToStep(step) {
     const prev = $(SCREENS[state.currentStep]);
     const next = $(SCREENS[step]);
+
+    // Stop any running timer/test if leaving a physical test screen
+    if (state.currentStep === BALANCE_STEP && state.timer && state.timer.running) {
+      state.timer.stop();
+    }
 
     // Slide previous screen out
     if (prev) {
@@ -62,6 +71,10 @@
     }
 
     state.currentStep = step;
+
+    // Auto-reset physical tests when navigating back to them
+    if (step === BALANCE_STEP)   resetBalanceTest();
+    if (step === CALFRAISE_STEP) resetCalfTest();
 
     // Slide next screen in
     if (next) {
@@ -362,6 +375,26 @@
     setTimeout(nextStep, 800);
   }
 
+  /** Reset balance test so it can be re-taken */
+  function resetBalanceTest() {
+    // Stop any running timer
+    if (state.timer) state.timer.reset();
+
+    // Reset UI
+    $('balanceStart').style.display = 'block';
+    $('balanceStop').style.display  = 'none';
+    $('timerValue').textContent     = '0.0';
+
+    // Reset timer ring
+    var circ = 2 * Math.PI * 90;
+    var ring = $('timerRingFill');
+    ring.style.strokeDasharray  = circ;
+    ring.style.strokeDashoffset = circ;
+
+    // Clear stored answer
+    delete state.answers.balance_hold_raw;
+  }
+
   // ============================================
   // Calf-raise counter
   // ============================================
@@ -394,6 +427,18 @@
       state.answers.calf_raises_raw = state.counter.getCount();
       nextStep();
     });
+  }
+
+  /** Reset calf raise test so it can be re-taken */
+  function resetCalfTest() {
+    // Reset counter
+    if (state.counter) state.counter.reset();
+
+    // Reset UI
+    $('calfCount').textContent = '0';
+
+    // Clear stored answer
+    delete state.answers.calf_raises_raw;
   }
 
   // ============================================
