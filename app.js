@@ -452,7 +452,7 @@
     renderCategoryBars(categories);
 
     // ── Insights ──
-    $('insightsText').textContent = ScoringEngine.getInsights(tier, categories);
+    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
 
     // ── Action steps ──
     var steps = ScoringEngine.getActionableSteps(tier);
