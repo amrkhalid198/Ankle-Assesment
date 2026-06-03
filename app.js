@@ -50,18 +50,9 @@
   // ============================================
   // Core Navigation (Main Test Flow)
   // ============================================
-  // Step indices for physical tests
-  const BALANCE_STEP  = 7;
-  const CALFRAISE_STEP = 8;
-
   function goToStep(step) {
     const prev = $(SCREENS[state.currentStep]);
     const next = $(SCREENS[step]);
-
-    // Stop any running timer/test if leaving a physical test screen
-    if (state.currentStep === BALANCE_STEP && state.timer && state.timer.running) {
-      state.timer.stop();
-    }
 
     // Slide previous screen out
     if (prev) {
@@ -71,10 +62,6 @@
     }
 
     state.currentStep = step;
-
-    // Auto-reset physical tests when navigating back to them
-    if (step === BALANCE_STEP)   resetBalanceTest();
-    if (step === CALFRAISE_STEP) resetCalfTest();
 
     // Slide next screen in
     if (next) {
@@ -299,15 +286,15 @@
 
     // Hardcoded Egyptian Arabic Labels
     function getConfLabel(v) {
-      if (v <= 3) return "مفيش ثقة خالص"; // No confidence
-      if (v <= 7) return "ثقة متوسطة";    // Moderate
-      return "ثقة كاملة";                 // Full confidence
+      if (v <= 3) return "مفيش ثقة خالص";
+      if (v <= 7) return "ثقة متوسطة";
+      return "ثقة كاملة";
     }
     
     function getFearLabel(v) {
-      if (v <= 3) return "مأثر عليا جداً"; // Affecting me a lot
-      if (v <= 7) return "تأثير متوسط";    // Moderate effect
-      return "مفيش خوف خالص";              // No fear at all
+      if (v <= 3) return "بيوقفني كتير";
+      if (v <= 7) return "تأثير متوسط";
+      return "مفيش خوف خالص";
     }
 
     function sync(slider, numEl, labelEl, labelFn) {
@@ -375,26 +362,6 @@
     setTimeout(nextStep, 800);
   }
 
-  /** Reset balance test so it can be re-taken */
-  function resetBalanceTest() {
-    // Stop any running timer
-    if (state.timer) state.timer.reset();
-
-    // Reset UI
-    $('balanceStart').style.display = 'block';
-    $('balanceStop').style.display  = 'none';
-    $('timerValue').textContent     = '0.0';
-
-    // Reset timer ring
-    var circ = 2 * Math.PI * 90;
-    var ring = $('timerRingFill');
-    ring.style.strokeDasharray  = circ;
-    ring.style.strokeDashoffset = circ;
-
-    // Clear stored answer
-    delete state.answers.balance_hold_raw;
-  }
-
   // ============================================
   // Calf-raise counter
   // ============================================
@@ -427,18 +394,6 @@
       state.answers.calf_raises_raw = state.counter.getCount();
       nextStep();
     });
-  }
-
-  /** Reset calf raise test so it can be re-taken */
-  function resetCalfTest() {
-    // Reset counter
-    if (state.counter) state.counter.reset();
-
-    // Reset UI
-    $('calfCount').textContent = '0';
-
-    // Clear stored answer
-    delete state.answers.calf_raises_raw;
   }
 
   // ============================================
@@ -496,24 +451,21 @@
     // ── Category bars ──
     renderCategoryBars(categories);
 
-    // ── Section 1: Clinical Diagnosis ──
-    $('diagnosisText').innerHTML = ScoringEngine.getDiagnosis(tier).replace(/\n/g, '<br>');
+    // ── Insights ──
+    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
 
-    // ── Section 2: Reality Check ──
-    $('realityCheckText').innerHTML = ScoringEngine.getRealityCheck(tier).replace(/\n/g, '<br>');
-
-    // ── Section 3: Rehabilitation Blueprint ──
-    var phases = ScoringEngine.getBlueprint(tier);
-    $('blueprintList').innerHTML = phases.map(function (p, i) {
+    // ── Action steps ──
+    var steps = ScoringEngine.getActionableSteps(tier);
+    $('actionStepsList').innerHTML = steps.map(function (s, i) {
       return '<div class="action-step animate-in" style="animation-delay:' +
         (0.8 + i * 0.15) + 's;">' +
         '<div class="action-step-number">' + (i + 1) + '</div>' +
-        '<h4>' + p.title + '</h4>' +
-        '<p>' + p.description.replace(/\n/g, '<br>') + '</p></div>';
+        '<h4>' + s.title + '</h4>' +
+        '<p>' + s.description + '</p></div>';
     }).join('');
 
-    // ── Section 4: CTA ──
-    $('ctaText').innerHTML = ScoringEngine.getCTAText(tier).replace(/\n/g, '<br>');
+    // ── CTA ──
+    $('ctaText').textContent = ScoringEngine.getCTAText(tier);
   }
 
   // ── Animated counter + ring fill ──
