@@ -50,18 +50,9 @@
   // ============================================
   // Core Navigation (Main Test Flow)
   // ============================================
-  // Step indices for physical tests
-  const BALANCE_STEP  = 7;
-  const CALFRAISE_STEP = 8;
-
   function goToStep(step) {
     const prev = $(SCREENS[state.currentStep]);
     const next = $(SCREENS[step]);
-
-    // Stop any running timer/test if leaving a physical test screen
-    if (state.currentStep === BALANCE_STEP && state.timer && state.timer.running) {
-      state.timer.stop();
-    }
 
     // Slide previous screen out
     if (prev) {
@@ -72,10 +63,6 @@
 
     state.currentStep = step;
 
-    // Auto-reset physical tests when navigating back to them
-    if (step === BALANCE_STEP)   resetBalanceTest();
-    if (step === CALFRAISE_STEP) resetCalfTest();
-
     // Slide next screen in
     if (next) {
       setTimeout(() => {
@@ -85,11 +72,55 @@
       }, 50);
     }
 
+    // Reset physical test UI whenever we (re)visit those screens
+    resetTestScreen(step);
+
     updateProgress();
 
     // Show progress bar after entering the main test (Step 1)
     if (step > 0) $('progressContainer').style.display = 'block';
     updateBackButton();
+  }
+
+  // Reset a physical test screen to its initial state so it can be retaken
+  function resetTestScreen(step) {
+    const BALANCE_STEP   = 7;
+    const CALFRAISE_STEP = 8;
+
+    if (step === BALANCE_STEP) {
+      // Stop any running timer first
+      if (state.timer) {
+        state.timer.stop();
+        state.timer = null;
+      }
+      // Reset timer ring
+      const CIRC = 2 * Math.PI * 90;
+      const ring = $('timerRingFill');
+      if (ring) {
+        ring.style.strokeDasharray  = CIRC;
+        ring.style.strokeDashoffset = CIRC;
+      }
+      // Reset display and buttons
+      var tv = $('timerValue');
+      if (tv) tv.textContent = '0.0';
+      var bs = $('balanceStart');
+      var bstop = $('balanceStop');
+      if (bs)    bs.style.display   = 'block';
+      if (bstop) bstop.style.display = 'none';
+      // Clear the stored answer so a fresh result is recorded
+      delete state.answers.balance_hold_raw;
+    }
+
+    if (step === CALFRAISE_STEP) {
+      // Reset counter
+      if (state.counter) {
+        state.counter.reset();
+      }
+      var cc = $('calfCount');
+      if (cc) cc.textContent = '0';
+      // Clear the stored answer
+      delete state.answers.calf_raises_raw;
+    }
   }
 
   function nextStep() {
@@ -370,29 +401,14 @@
 
   function finishBalance(elapsed) {
     state.answers.balance_hold_raw = Math.floor(elapsed);
-    $('balanceStop').style.display = 'none';
-    $('timerValue').textContent = Math.floor(elapsed) + 's';
-    setTimeout(nextStep, 800);
-  }
-
-  /** Reset balance test so it can be re-taken */
-  function resetBalanceTest() {
-    // Stop any running timer
-    if (state.timer) state.timer.reset();
-
-    // Reset UI
-    $('balanceStart').style.display = 'block';
-    $('balanceStop').style.display  = 'none';
-    $('timerValue').textContent     = '0.0';
-
-    // Reset timer ring
-    var circ = 2 * Math.PI * 90;
-    var ring = $('timerRingFill');
-    ring.style.strokeDasharray  = circ;
-    ring.style.strokeDashoffset = circ;
-
-    // Clear stored answer
-    delete state.answers.balance_hold_raw;
+    var bstop = $('balanceStop');
+    if (bstop) bstop.style.display = 'none';
+    var tv = $('timerValue');
+    if (tv) tv.textContent = Math.floor(elapsed) + 's';
+    // Only auto-advance if the user is still on the balance screen
+    setTimeout(function() {
+      if (state.currentStep === 7) nextStep();
+    }, 800);
   }
 
   // ============================================
@@ -427,18 +443,6 @@
       state.answers.calf_raises_raw = state.counter.getCount();
       nextStep();
     });
-  }
-
-  /** Reset calf raise test so it can be re-taken */
-  function resetCalfTest() {
-    // Reset counter
-    if (state.counter) state.counter.reset();
-
-    // Reset UI
-    $('calfCount').textContent = '0';
-
-    // Clear stored answer
-    delete state.answers.calf_raises_raw;
   }
 
   // ============================================
@@ -496,24 +500,21 @@
     // ── Category bars ──
     renderCategoryBars(categories);
 
-    // ── Section 1: Clinical Diagnosis ──
-    $('diagnosisText').innerHTML = ScoringEngine.getDiagnosis(tier).replace(/\n/g, '<br>');
+    // ── Insights ──
+    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
 
-    // ── Section 2: Reality Check ──
-    $('realityCheckText').innerHTML = ScoringEngine.getRealityCheck(tier).replace(/\n/g, '<br>');
-
-    // ── Section 3: Rehabilitation Blueprint ──
-    var phases = ScoringEngine.getBlueprint(tier);
-    $('blueprintList').innerHTML = phases.map(function (p, i) {
+    // ── Action steps ──
+    var steps = ScoringEngine.getActionableSteps(tier);
+    $('actionStepsList').innerHTML = steps.map(function (s, i) {
       return '<div class="action-step animate-in" style="animation-delay:' +
         (0.8 + i * 0.15) + 's;">' +
         '<div class="action-step-number">' + (i + 1) + '</div>' +
-        '<h4>' + p.title + '</h4>' +
-        '<p>' + p.description.replace(/\n/g, '<br>') + '</p></div>';
+        '<h4>' + s.title + '</h4>' +
+        '<p>' + s.description + '</p></div>';
     }).join('');
 
-    // ── Section 4: CTA ──
-    $('ctaText').innerHTML = ScoringEngine.getCTAText(tier).replace(/\n/g, '<br>');
+    // ── CTA ──
+    $('ctaText').textContent = ScoringEngine.getCTAText(tier);
   }
 
   // ── Animated counter + ring fill ──
