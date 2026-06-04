@@ -193,22 +193,19 @@ const I18n = {
     'results.scoreTotal': '/ ١٠٠',
     'results.acuteWarning.title': 'تنبيه مهم',
     'results.acuteWarning.text': 'بناءً على إجاباتك، ممكن تكون إصابتك لسه في الـ Acute Phase. بننصحك تراجع دكتور أو أخصائي تأهيل قبل ما تبدأ أي Rehab Protocol.',
+    'results.insights.title': 'ماذا يعني هذا',
+    'results.actionSteps.title': 'الـ Next Steps',
+    'results.cta.title': 'جاهز تبدأ الـ System الكامل؟',
+    'results.cta.button': 'احصل على الـ System ←',
     'results.retake': 'إعادة التقييم (Retake)',
 
     // ==========================================
-    // Section Titles (Results Page)
+    // CTA Text per Tier — unified conversion body
     // ==========================================
-    'results.section.diagnosis': 'ماذا يعني هذا',
-    'results.section.realityCheck': 'لماذا تفشل الحلول العامة',
-    'results.section.blueprint': 'المسار التأهيلي',
-    'results.section.cta': 'التقييم كشف المشكلة.. النظام هيحلها',
-
-    // ==========================================
-    // Phase Titles (Constant across all tiers)
-    // ==========================================
-    'results.phase1.title': 'Phase 1: Motor Control & Proprioception',
-    'results.phase2.title': 'Phase 2: Dynamic Stability',
-    'results.phase3.title': 'Phase 3: Force Absorption',
+    'cta.severe': 'فيديوهات اليوتيوب مش هتعالج المشكلة دي، وممكن تزود الـ (Compensatory Patterns). عشان ترجع لرياضتك بأمان محتاج خطة تأهيل مبنية على تدرج علمي في الأحمال. الـ (Armor Protocol) هو النظام الكامل اللي هياخدك خطوة بخطوة عشان تحل الفجوة دي وتمنع الإصابة إنها تتكرر.',
+    'cta.moderate': 'فيديوهات اليوتيوب مش هتعالج المشكلة دي، وممكن تزود الـ (Compensatory Patterns). عشان ترجع لرياضتك بأمان محتاج خطة تأهيل مبنية على تدرج علمي في الأحمال. الـ (Armor Protocol) هو النظام الكامل اللي هياخدك خطوة بخطوة عشان تحل الفجوة دي وتمنع الإصابة إنها تتكرر.',
+    'cta.mild': 'فيديوهات اليوتيوب مش هتعالج المشكلة دي، وممكن تزود الـ (Compensatory Patterns). عشان ترجع لرياضتك بأمان محتاج خطة تأهيل مبنية على تدرج علمي في الأحمال. الـ (Armor Protocol) هو النظام الكامل اللي هياخدك خطوة بخطوة عشان تحل الفجوة دي وتمنع الإصابة إنها تتكرر.',
+    'cta.optimal': 'فيديوهات اليوتيوب مش هتعالج المشكلة دي، وممكن تزود الـ (Compensatory Patterns). عشان تفضل على هذا المستوى وتحمي نفسك على المدى الطويل، محتاج نظام (Maintenance Protocol) مبني علمياً. الـ (Armor Protocol) هيضمن إن الكاحل يفضل على نفس المستوى ده تحت الضغط.',
 
     // ==========================================
     // Email Gateway
@@ -241,64 +238,48 @@ const I18n = {
     'cat.power': 'القوة والانفجارية',
 
     // ==========================================
-    // Section 1: Clinical Diagnosis per tier
+    // Insights per tier — short clinical diagnoses (2-3 sentences max)
     // ==========================================
-    'diagnosis.severe': 'نتيجتك بتوضح إن عندك خلل واضح في الـ (Chronic Ankle Instability) وصل لمرحلة متقدمة. الأرقام بتقول إن الـ (Mechanoreceptors) — وهي الخلايا الحسية اللي جوا الأربطة المسؤولة إنها تقول للمخ الكاحل فين بالظبط في الفراغ — دي اتضررت بشكل كبير.\n\nالنتيجة العملية: الـ (Dynamic Joint Position Sense) عندك شبه مش شغال. ده معناه إن الكاحل بتاعك مش بيعرف يستجيب للأرض في الوقت المناسب — خصوصاً وقت الـ (Sudden Perturbation) زي لما رجلك تلمس الأرض بزاوية مش متوقعة. المشكلة دي مأثرة على الـ (Kinetic Chain) بالكامل لحد الركبة والفخذ، مش الكاحل بس.\n\nمن غير إصلاح الخلل ده على مستوى الـ (Neuromuscular Control)، أي حركة (Reactive) هتفضل بتعرضك لإصابة جديدة.',
+    'insight.severe': 'امتصاص الصدمة (Force Absorption) وثبات الكاحل عندك متأثرين بشكل واضح. أي نشاط فيه تحميل أو احتكاك عالي يعتبر غير آمن حالياً، لأن الأربطة لسه معندهاش الـ (Motor Control) الكافي إنها تحمي وتثبت المفصل. التأخير في التأهيل بيزود الـ (Re-Injury Risk) وبيرسّخ الأنماط التعويضية الغلط.',
 
-    'diagnosis.moderate': 'نتيجتك بتوضح إن عندك (Chronic Ankle Instability) في المرحلة المتوسطة. الكاحل بتاعك مش مكسور ومش ضعيف بالمعنى التقليدي — المشكلة أعمق من كده.\n\nاللي بيحصل: الـ (Sensorimotor System) عندك بقى يعتمد على (Compensatory Patterns) بدل الاستجابة الطبيعية. يعني لما جسمك بيحس بعدم ثبات، بدل ما الكاحل نفسه يعمل الـ (Corrective Response)، العضلات الأكبر زي الـ (Peroneals) والـ (Hip Stabilizers) بتتدخل في وقت مش صح وبطريقة مش مظبوطة.\n\nالنتيجة: إنت ممكن تحس إنك تمام في التمرين العادي، بس في لحظات الـ (High-Velocity Deceleration) — زي الـ (Cutting) المفاجئ أو الـ (Landing) من نطة — الـ (Neuromuscular Timing) عندك متأخر بجزء من الثانية. والجزء ده كافي إن الكاحل يفلت.',
+    'insight.moderate': 'الكاحل عندك بيعتمد على أنماط تعويضية (Compensatory Patterns) عشان يتعامل مع الحركة والتحميل. ده معناه إن الثبات الديناميكي (Dynamic Stability) متأثر، وتحت الضغط الحقيقي في اللعب الإصابة ممكن تحصل في أي لحظة. كل مرة المفصل بيفلت من غير تدخل، الـ (Neuromuscular Deficit) بيتعمق أكتر.',
 
-    'diagnosis.mild': 'نتيجتك بتقول إن عندك (Residual Deficit) بسيط في الـ (Chronic Ankle Instability). ده معناه إن الكاحل بتاعك اتعافى بنسبة كبيرة — بس مش بالكامل.\n\nالخلل اللي باقي هو في الـ (Neuromuscular Calibration) الدقيقة — تحديداً في الـ (Rate of Force Development) والـ (Anticipatory Postural Adjustments). ببساطة: الكاحل بتاعك شغال كويس في الظروف العادية، بس تحت ضغط الـ (Fatigue) أو في حركة مفاجئة مش متوقعة، سرعة الاستجابة بتاعته بتقل بدرجة كافية إنها تعرضك لـ (Micro-Trauma) أو التواء جديد.\n\nده بالظبط اللي الأبحاث بتسميه (The Final 10% Problem) — أصعب جزء في التأهيل لأنك بتحس إنك خلاص كويس.',
+    'insight.mild': 'فيه ضعف بسيط في الـ (Neuromuscular Timing) بتاع الكاحل. ممكن تحس إن الدنيا تمام في التمرين العادي، لكن مع الـ (Cutting) السريع أو أي (Landing) مفاجئ، الكاحل ممكن يخذلك. المرحلة دي أخطر مرحلة لأنك ممكن توقف التأهيل بدري وتتفاجأ بإصابة جديدة.',
 
-    'diagnosis.optimal': 'نتيجتك ممتازة. الـ (Neuromuscular Control)، الـ (Proprioceptive Accuracy)، والـ (Force Absorption Capacity) عندك كلهم في المعدل الطبيعي أو أعلى.\n\nده معناه إن الـ (Sensorimotor System) بتاعك شغال بكفاءة والكاحل بيستجيب للـ (Dynamic Perturbations) بشكل سليم.\n\nبس نقطة مهمة: الـ (Neuromuscular Adaptations) دي مش دائمة. من غير (Structured Maintenance)، الأبحاث أثبتت إن الـ (Proprioceptive Gains) بتبدأ تتراجع خلال ٦ لـ ٨ أسابيع.',
+    'insight.optimal': 'الكاحل عندك يملك مستوى جيد من الـ (Neuromuscular Control) و(Dynamic Stability). للحفاظ على هذا المستوى وحماية نفسك على المدى الطويل، تمارين الثبات لازم تفضل جزء ثابت من الإحماء. التراجع في هذه المرحلة غير محسوس في البداية لكن تداعياته تظهر تحت الضغط.',
 
-    // ==========================================
-    // Section 2: Reality Check per tier
-    // ==========================================
-    'realityCheck.severe': 'لو فكرت تدور على تمارين أونلاين — هتلاقي ناس بتقولك "اعمل Calf Raises" أو "اقف على رجل واحدة على مخدة". المشكلة إن التمارين دي بتفترض إن الـ (Motor Control) عندك شغال أصلاً — وهو مش شغال.\n\nلما تعمل تمرين Balance من غير ما الـ (Neuromuscular Timing) يكون اتصلح الأول، جسمك بيلاقي طرق بديلة يثبت بيها — زي إنه يعتمد على الـ (Hip Strategy) بدل الـ (Ankle Strategy). النتيجة: إنت فاكر إنك بتتحسن، بس في الحقيقة جسمك بيبني (Compensatory Patterns) جديدة فوق الأنماط القديمة المكسورة.\n\nالتمارين العامة بتقوي العضلة. بس مشكلتك مش في القوة — مشكلتك في التوقيت.',
-
-    'realityCheck.moderate': 'أغلب التمارين اللي هتلاقيها عشان "تقوي الكاحل" بتشتغل على الـ (Concentric Strengthening) — يعني بتبني قوة العضلة وهي بتنقبض. بس مشكلتك مش هنا.\n\nالخلل عندك في الـ (Eccentric Control) والـ (Reactive Stabilization) — يعني قدرة العضلة إنها تتحكم في الحركة وهي بتتمدد تحت حمل مفاجئ. ده بالظبط اللي بيحصل في لحظة الـ (Landing) أو الـ (Change of Direction).\n\nلو عملت تمارين Balance عادية أو حتى Calf Raises بأي عدد من التكرارات، إنت بتقوي الجزء اللي مش فيه مشكلة وبتسيب الجزء الحقيقي المأثر. أسوأ من كده — إنت بتدي نفسك إحساس كاذب بالأمان.',
-
-    'realityCheck.mild': 'في المرحلة بتاعتك، الخطر مش إنك تعمل حاجة غلط — الخطر إنك توقف تأهيل بدري لأنك حاسس إنك كويس.\n\nالتمارين العامة اللي ممكن تلاقيها هتحافظلك على المستوى الحالي — بس مش هتسد الفجوة الأخيرة. الـ (Final Phase) من التأهيل محتاج نوع مختلف تماماً من التدرج: تمارين بتحاكي الضغط الحقيقي بتاع الملعب بـ (Progressive Overload) محسوب بدقة.\n\nالمشكلة: أي خطأ في الـ (Load Progression) في المرحلة دي — سواء أكتر من اللازم أو أقل من اللازم — بيضيع كل التقدم اللي عملته. المرحلة دي مفيهاش مساحة للتخمين.',
-
-    'realityCheck.optimal': 'أكبر غلطة بيعملها الرياضي اللي وصل لمستواك هي إنه يفتكر إن القوة اللي عنده دي هتفضل. الـ (Proprioceptive System) محتاج تحفيز مستمر — من غيره، الـ (Neuromuscular Pathways) اللي اتبنت بتبدأ تضعف.\n\nالتمارين العشوائية أو الإحماء العام مش كافيين يحافظوا على المستوى ده. محتاج نظام (Maintenance) مبني على الـ (Periodization) الصح.',
+    'insight.weakest': ' أكبر (Deficit) عندك موجود في {label} ({pct}٪)، وده المحور الأساسي اللي لازم يكون تركيزك عليه.',
 
     // ==========================================
-    // Section 3: Rehab Blueprint phases per tier
+    // Action Steps per tier
     // ==========================================
-    'blueprint.severe.phase1': 'في حالتك، المرحلة دي مش مجرد تمرين Balance — دي إعادة بناء كاملة للثقة بين الجهاز العصبي والأربطة المتضررة. الـ (Mechanoreceptors) محتاجة تتعلم من الأول إنها تقرأ إشارات الأرض وتبعت المعلومة للمخ في الوقت الصح.\n\nبس تنفيذ المرحلة دي بأمان محتاج (Load Management) دقيق جداً و(Progression Models) مبنية على الـ (Clinical Milestones) — مش على الإحساس. أي تسرع هنا بيرجعك للنقطة صفر.',
-
-    'blueprint.severe.phase2': 'بعد ما الـ (Motor Control) يتأسس، المفصل محتاج يتعلم يثبت تحت ضغط متغير — مش بس وإنت واقف ثابت. المرحلة دي بتدخل حركة حقيقية وبتجبر الـ (Stabilizers) يشتغلوا في بيئة غير متوقعة.\n\nالمشكلة: لو الـ (Intensity) زادت قبل ما الأساس يكون جاهز فعلاً، الجسم هيلجأ للـ (Compensatory Patterns) تاني. عشان كده المرحلة دي محتاجة (Progression Criteria) واضحة ومحددة قبل الانتقال.',
-
-    'blueprint.severe.phase3': 'المرحلة الأخيرة بتتعامل مع أخطر لحظة في أي رياضة: لحظة الهبوط وامتصاص القوة. الكاحل لازم يقدر يمتص (Ground Reaction Forces) بتوصل لـ ٣ أضعاف وزن الجسم — من غير ما يفلت.\n\nتنفيذ المرحلة دي من غير نظام (Progression) محسوب بيعني إنك بتعرض المفصل لحمل أكبر من اللي يستحمله. التخمين هنا مش بس بيضيع وقتك — بيعيد الإصابة.',
-
-    'blueprint.moderate.phase1': 'في حالتك، المرحلة دي بتشتغل على تصحيح الـ (Compensatory Motor Patterns) اللي جسمك اتعلمها. الهدف مش بس إنك تثبت — الهدف إنك تثبت بالطريقة الصح، يعني الكاحل نفسه يقود الاستجابة مش العضلات الأكبر.\n\nبس إعادة برمجة الـ (Motor Patterns) دي محتاجة تدرج دقيق في الـ (Load Management) وإن كل تمرين يكون مبني على (Progression Models) واضحة — مش مجرد "زود الصعوبة لما تحس إنك جاهز".',
-
-    'blueprint.moderate.phase2': 'بعد ما الاستجابة الصح ترجع، المفصل محتاج يتعرض لضغط ديناميكي حقيقي — حركات فيها تغيير اتجاه، تباطؤ مفاجئ، وهبوط من ارتفاعات مختلفة. المرحلة دي بتعيد بناء الـ (Reactive Stabilization) اللي بيحميك في الملعب.\n\nلو الـ (Progression) هنا مش مظبوط، جسمك هيرجع يعتمد على نفس الأنماط التعويضية القديمة. عشان كده المرحلة دي لازم تتبنى على (Progression Criteria) مش على الإحساس.',
-
-    'blueprint.moderate.phase3': 'المرحلة دي بتأهلك لامتصاص القوة الحقيقية — الـ (Ground Reaction Forces) اللي بتحصل في كل نطة وكل هبوط. الكاحل لازم يقدر يتعامل مع الحمل ده من غير ما يلجأ لأي (Compensation).\n\nالتنفيذ الآمن للمرحلة دي مبني على (Load Progression) محسوب ومبني على أرقام — مش على "جرب وشوف". أي حمل زيادة عن اللازم في التوقيت الغلط بيرجعك خطوة لورا.',
-
-    'blueprint.mild.phase1': 'في حالتك، المرحلة دي هي (Fine-Tuning) للجهاز العصبي — مش إعادة بناء. الـ (Proprioceptive System) عندك شغال بنسبة كبيرة، بس فيه نقاط دقيقة محتاجة ضبط عشان تقفل الفجوة الأخيرة وتمنع الـ (Micro-Trauma) المتكرر.\n\nبس حتى الـ (Fine-Tuning) ده محتاج (Load Management) محسوب و(Progression Models) مبنية على معايير أداء فعلية — لأن أي زيادة مش محسوبة في المرحلة دي بتقلب من تحسين لإصابة.',
-
-    'blueprint.mild.phase2': 'المرحلة دي بتضيف الضغط الديناميكي اللي بيحاكي الملعب فعلاً — مش مجرد تمارين Balance. الهدف إن الكاحل يثبت تلقائياً في حركات مفاجئة ومتغيرة، زي بالظبط اللي بيحصل في الماتش.\n\nالمشكلة: في المرحلة بتاعتك بالذات، الخط بين التحسن والإصابة رفيع جداً. عشان كده الـ (Progression) لازم يكون مبني على (Clinical Criteria) مش على إحساسك إنك "جاهز".',
-
-    'blueprint.mild.phase3': 'المرحلة الأخيرة بتأهلك لامتصاص القوة الكاملة — يعني الـ (Landing)، الـ (Deceleration)، والـ (Plyometric Loading) بالشكل اللي يحاكي الضغط الحقيقي بتاع رياضتك. دي بالظبط اللي بتحدد لو إنت فعلاً جاهز تنزل الملعب ولا لسه.\n\nالتدرج في المرحلة دي محتاج (Progression Models) مبنية على أرقام الأداء الفعلية — وأي تخمين في الحمل أو التوقيت معناه إنك ممكن ترجع تاني للنقطة اللي فاتت.',
-
-    'blueprint.optimal.phase1': 'حتى مع مستواك الممتاز، الـ (Proprioceptive System) محتاج تحفيز دوري عشان الـ (Neural Pathways) تفضل شغالة بنفس الكفاءة. من غير ده، التراجع بيحصل بشكل بطيء ومش ملحوظ — لحد ما الإصابة تيجي.\n\nالحفاظ على المستوى ده محتاج (Maintenance Progression) مبني على (Periodization) — مش مجرد تكرار لنفس التمارين. النظام لازم يكون متغير ومحسوب.',
-
-    'blueprint.optimal.phase2': 'الحفاظ على الـ (Dynamic Stability) عندك محتاج تعرض مستمر لمواقف حركية غير متوقعة. التكرار في نفس التمارين بيخلي الجهاز العصبي يتعود ويفقد الاستجابة الحقيقية.\n\nالنظام الصح لازم يوفرلك (Variation) مبنية على (Progression Models) عشان الـ (Reactive Stability) تفضل حادة ومش بتتراجع.',
-
-    'blueprint.optimal.phase3': 'الحفاظ على قدرتك على امتصاص القوة محتاج تدريب (Plyometric) دوري بأحمال مدروسة. المستوى اللي إنت فيه مش بيتحافظ عليه بالإحماء العادي — محتاج (Structured Loading) يفضل يتحدى الجهاز.\n\nمن غير نظام (Maintenance) واضح، الأبحاث بتقول إن الـ (Force Absorption Capacity) بتبدأ تقل خلال أسابيع.',
-
-    // ==========================================
-    // CTA Text per Tier
-    // ==========================================
-    'cta.severe': 'التقييم ده حدد بالظبط فين الخلل في الـ (Neuromuscular Control) بتاعك. بس التمارين العامة مش هتعرف توصلك من النقطة دي للنقطة اللي تقدر فيها تنزل الملعب بأمان — لأن المسافة بين حالتك الحالية والـ (Plyometric Readiness) كبيرة ومحتاجة بناء منهجي مش تخمين.\n\nالـ (Armor Protocol) هو النظام الوحيد اللي بيديك الـ (Day-by-Day Progression Models) المبنية على الـ (Clinical Milestones) — كل يوم محسوب بالظبط: إيه التمرين، كام تكرار، بأي حمل، وإمتى تنتقل للمرحلة اللي بعدها. من غير النظام ده، كل محاولة تأهيل هتفضل تبني على أساس مكسور.',
-
-    'cta.moderate': 'التقييم كشف إن عندك (Compensatory Movement Patterns) بتشتغل تحت السطح ومأثرة على الـ (Kinetic Chain) كلها. التمارين اللي على النت ممكن تقوي العضلة، بس مش هتعرف تصحح الـ (Motor Pattern) اللي جسمك اتعلمه غلط.\n\nالـ (Armor Protocol) بيديك الـ (Corrective Progression) اللي بيشتغل على المستوى اللي فيه المشكلة فعلاً — مش بس مستوى القوة. كل مرحلة فيها الـ (Load Management) والـ (Progression Criteria) المحددة اللي بتضمن إنك بتتحرك صح قبل ما تتحرك أسرع.',
-
-    'cta.mild': 'الفجوة بين وضعك الحالي والـ (Full Return to Sport Readiness) بسيطة — بس هي بالظبط الفجوة اللي بتتسبب في الإصابة اللي بعدها. التقييم أثبت إن الـ (Neuromuscular Calibration) الدقيقة لسه فيها نقص مش واضح غير تحت الضغط.\n\nالـ (Armor Protocol) بيديك الـ (Final-Phase Progression Models) اللي بتسد الفجوة دي بشكل آمن ومحسوب — لحد ما توصل لنقطة الـ (Plyometric Readiness) الكاملة. من غيره، هتفضل في المنطقة اللي فيها الإصابة مسألة وقت.',
-
-    'cta.optimal': 'أرقامك ممتازة. بس الأبحاث بتقول إن الـ (Neuromuscular Performance) بيبدأ يتراجع في خلال ٦ لـ ٨ أسابيع من غير (Structured Maintenance). الرياضي اللي بيحافظ على المستوى ده مش بيعمل كده بالصدفة — بيعمله بنظام.\n\nالـ (Armor Protocol) فيه الـ (Maintenance Progression) اللي بيخلي الـ (Proprioceptive System) والـ (Reactive Stability) بتوعك شغالين بنفس الكفاءة — عشان متتفاجئش بإصابة بعد ما كنت فاكر إنك محمي.'
+    'action.severe.1.title': 'Daily Balance Training',
+    'action.severe.1.desc': 'اقف على رجلك المصابة لمدة دقيقتين كل يوم — عيونك مفتوحة في الأول، وبعدين أقفلها. ده بيرجع يبني الـ Proprioception اللي الـ Ankle فقده.',
+    'action.severe.2.title': 'Controlled Calf Raises',
+    'action.severe.2.desc': 'العب ٣ مجاميع × ٨ عدات Single-leg calf raise مع ثبات ٣ ثواني فوق. ركز على الـ Stability مش السرعة عشان تبني نظام امتصاص الصدمات.',
+    'action.severe.3.title': 'Avoid Reactive Training — For Now',
+    'action.severe.3.desc': 'ماتحاولش تعمل Cutting أو نط أو أي حركات Explosive لحد ما تقدر تقف على رجل واحدة لـ ٣٠+ ثانية بانتظام. ابني الأساس الأول.',
+    
+    'action.moderate.1.title': 'Unstable Surface Balance',
+    'action.moderate.1.desc': 'اتمرن على الـ Balance على مخدة أو Foam pad — ٣ مجاميع × ٣٠ ثانية. ده هيعمل Challenge للـ Proprioception أكتر من الأرض الثابتة.',
+    'action.moderate.2.title': 'Perturbation Training',
+    'action.moderate.2.desc': 'وإنت واقف على رجل واحدة، خلي حد يزقك خفيف من كتفك أو وسطك. الـ Ankle لازم يتعلم يعمل React للقوة المفاجئة — مش بس يثبت.',
+    'action.moderate.3.title': 'Low-Level Reactive Drills',
+    'action.moderate.3.desc': 'ابتدأ بـ Hop-and-stick (نط واثبت). نط لقدام وبعدين للجنب. اثبت في الـ Landing ٣ ثواني من غير أي Wobble قبل ما تنط تاني.',
+    
+    'action.mild.1.title': 'Multi-Directional Hop Series',
+    'action.mild.1.desc': 'ابدأ اعمل Single-leg hops في كل الاتجاهات — قدام، جنب، دايَجونال، وبدوران. كل Landing لازم يكون Controlled لمدة ثانيتين.',
+    'action.mild.2.title': 'Sport-Specific Deceleration',
+    'action.mild.2.desc': 'دخل تمارين الـ Cutting والوقوف المفاجئ بـ Intensity ٧٠٪. ركز على الـ Controlled Deceleration — دي أكتر لحظة الـ Ankle بيكون فيها Vulnerable.',
+    'action.mild.3.title': 'The Box Drop Benchmark',
+    'action.mild.3.desc': 'هل تقدر تعمل Single-leg landing من ارتفاع ٢٠ سم من غير أي Wobble؟ خلي ده الـ Benchmark بتاعك. لما تقدر تعمله ١٠/١٠ مرات، إنت كده جاهز.',
+    
+    'action.optimal.1.title': 'Maintain Reactive Training',
+    'action.optimal.1.desc': 'خلي تمارين الـ Reactive balance في الإحماء بتاعك مرتين أو تلاتة في الأسبوع. ٥ دقايق كفاية عشان تحافظ على استجابة الـ Nervous system.',
+    'action.optimal.2.title': 'High-Level Plyometrics',
+    'action.optimal.2.desc': 'ادخل في تمارين بليومتريك أتقل زي الـ Depth jumps والـ Lateral bounds تحت ضغط الإرهاق. الهدف هنا الأداء تحت الضغط.',
+    'action.optimal.3.title': 'Periodic Retesting',
+    'action.optimal.3.desc': 'عيد الـ Assessment ده كل ٤ لـ ٦ أسابيع. إنك تلحق أي تراجع في المستوى بدري — قبل ما يتحول لإصابة — ده اللي بيميز الرياضي المحترف.'
   },
 
   // ------------------------------------------
