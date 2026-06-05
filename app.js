@@ -167,6 +167,7 @@
       next.classList.remove('hidden');
       setTimeout(() => next.classList.add('active'), 50);
     }
+    updateBackButton();
   }
 
   function setupClinicalGate() {
@@ -194,8 +195,8 @@
     if (btnLegalNext) {
       btnLegalNext.addEventListener('click', () => {
         state.onLegalScreen = false;
-        gateNavigate('screen-legal', null);
-        goToStep(1);
+        gateNavigate('screen-legal', 'screen-timeline');
+        updateBackButton();
       });
     }
 
@@ -245,12 +246,58 @@
         goToStep(1); // Proceed to Phase 1 history
       });
     }
+
+    // Hard Stop Restart button → triggers full retake
+    const btnHardStopRestart = $('btn-hard-stop-restart');
+    if (btnHardStopRestart) {
+      btnHardStopRestart.addEventListener('click', () => {
+        $('retakeBtn').click();
+      });
+    }
   }
 
   // ============================================
   // Back Navigation
   // ============================================
   function prevStep() {
+    // Determine which gateway screen is currently visible
+    const hardStop   = $('screen-hard-stop');
+    const greenLight = $('screen-green-light');
+    const triage     = $('screen-triage');
+    const timeline   = $('screen-timeline');
+    const legal      = $('screen-legal');
+
+    const isVisible = (el) => el && el.classList.contains('active') && !el.classList.contains('hidden');
+
+    if (isVisible(hardStop) || isVisible(greenLight)) {
+      // Hard stop / green light → timeline
+      if (isVisible(hardStop))   gateNavigate('screen-hard-stop',   null);
+      if (isVisible(greenLight)) gateNavigate('screen-green-light', null);
+      // Un-check timeline radios before showing
+      document.querySelectorAll('input[name="timeline"]').forEach(r => r.checked = false);
+      const tlScreen = $('screen-timeline');
+      tlScreen.classList.remove('hidden');
+      setTimeout(() => tlScreen.classList.add('active'), 50);
+      return;
+    }
+
+    if (isVisible(triage)) {
+      // Triage → timeline
+      gateNavigate('screen-triage', null);
+      const tlScreen = $('screen-timeline');
+      tlScreen.classList.remove('hidden');
+      setTimeout(() => tlScreen.classList.add('active'), 50);
+      return;
+    }
+
+    if (isVisible(timeline)) {
+      // Timeline → legal
+      gateNavigate('screen-timeline', null);
+      legal.classList.remove('hidden');
+      setTimeout(() => legal.classList.add('active'), 50);
+      return;
+    }
+
     if (state.onLegalScreen) {
       // Legal → Welcome
       gateNavigate('screen-legal', null);
@@ -267,7 +314,6 @@
       state.currentStep = 0;
       $('progressContainer').style.display = 'none';
       state.onLegalScreen = true;
-      const legal = $('screen-legal');
       legal.classList.remove('hidden');
       setTimeout(() => legal.classList.add('active'), 50);
     } else if (state.currentStep > 1 && state.currentStep < RESULTS_STEP) {
@@ -279,7 +325,14 @@
   function updateBackButton() {
     const btn = $('backBtn');
     if (!btn) return;
-    if (state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
+
+    const gatewayScreenIds = ['screen-legal', 'screen-timeline', 'screen-triage', 'screen-hard-stop', 'screen-green-light'];
+    const anyGatewayActive = gatewayScreenIds.some(id => {
+      const el = $(id);
+      return el && el.classList.contains('active') && !el.classList.contains('hidden');
+    });
+
+    if (anyGatewayActive || state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
       btn.style.display = 'flex';
     } else {
       btn.style.display = 'none';
@@ -324,6 +377,8 @@
   // ============================================
   // Confidence sliders (Egyptian Arabic Hardcoded)
   // ============================================
+  var slidersInitialized = false;
+
   function setupSliders() {
     const confSlider = $('confidenceSlider');
     const fearSlider = $('fearSlider');
@@ -352,20 +407,25 @@
         'linear-gradient(to right, var(--accent) ' + pct + '%, var(--bg-card) ' + pct + '%)';
     }
 
-    confSlider.addEventListener('input', () =>
-      sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel));
-    fearSlider.addEventListener('input', () =>
-      sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel));
+    // Only attach event listeners once
+    if (!slidersInitialized) {
+      confSlider.addEventListener('input', () =>
+        sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel));
+      fearSlider.addEventListener('input', () =>
+        sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel));
 
-    // Init slider visuals
+      $('confidenceNext').addEventListener('click', () => {
+        state.answers.movement_confidence = parseInt(confSlider.value, 10);
+        state.answers.fear_reinjury       = parseInt(fearSlider.value, 10);
+        nextStep();
+      });
+
+      slidersInitialized = true;
+    }
+
+    // Always sync visuals when screen loads
     sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel);
     sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel);
-
-    $('confidenceNext').addEventListener('click', () => {
-      state.answers.movement_confidence = parseInt(confSlider.value, 10);
-      state.answers.fear_reinjury       = parseInt(fearSlider.value, 10);
-      nextStep();
-    });
   }
 
   // ============================================
@@ -501,7 +561,10 @@
     renderCategoryBars(categories);
 
     // ── Insights ──
-    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
+    const insightsContent = ScoringEngine.getInsights(tier, categories);
+    $('insightsText').innerHTML = insightsContent
+      ? insightsContent.replace(/\n/g, '<br>')
+      : 'لا توجد بيانات متاحة حالياً.';
 
     // ── Action steps ──
     var steps = ScoringEngine.getActionableSteps(tier);
@@ -584,7 +647,7 @@
     if(submitBtn) {
       submitBtn.addEventListener('click', function () {
         var email = $('gateEmailInput').value.trim();
-        if (email && email.includes('@') && email.includes('.')) {
+        if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           errorEl.style.display = 'none';
 
           // Pre-calculate results
@@ -625,7 +688,11 @@
       $('confidenceSlider').value = 5;
       $('fearSlider').value       = 5;
       $('timerValue').textContent  = '0.0';
-      $('calfCount').textContent   = '0';
+      var calfCountEl = $('calfCount');
+      if (calfCountEl) {
+        calfCountEl.textContent = '0';
+        calfCountEl.style.transform = 'scale(1)';
+      }
       $('balanceStart').style.display = 'block';
       $('balanceStop').style.display  = 'none';
       $('progressContainer').style.display = 'none';
@@ -633,9 +700,29 @@
       if($('gateEmailError')) $('gateEmailError').style.display = 'none';
       if($('acuteWarning')) $('acuteWarning').style.display = 'none';
 
-      // Reset timer ring
-      var circ = 2 * Math.PI * 90;
-      $('timerRingFill').style.strokeDashoffset = circ;
+      // Reset both SVG rings
+      var timerCirc = 2 * Math.PI * 90;
+      var scoreCirc = 2 * Math.PI * 80;
+      var timerRing = $('timerRingFill');
+      var scoreRing = $('scoreRingFill');
+      if (timerRing) timerRing.style.strokeDashoffset = timerCirc;
+      if (scoreRing) {
+        scoreRing.style.strokeDashoffset = scoreCirc;
+        scoreRing.style.stroke = 'var(--accent)';
+      }
+
+      // Clear stale results DOM
+      var tierBadgeEl = $('tierBadge');
+      var categoryBarsEl = $('categoryBars');
+      var actionStepsListEl = $('actionStepsList');
+      var insightsTextEl = $('insightsText');
+      if (tierBadgeEl)      tierBadgeEl.innerHTML      = '';
+      if (categoryBarsEl)   categoryBarsEl.innerHTML   = '';
+      if (actionStepsListEl) actionStepsListEl.innerHTML = '';
+      if (insightsTextEl)   insightsTextEl.innerHTML   = '';
+
+      var scoreValueEl = $('scoreValue');
+      if (scoreValueEl) { scoreValueEl.textContent = '0'; scoreValueEl.style.color = ''; }
 
       // Uncheck Gate Radios & Checkboxes
       const legalCheckbox = $('legal-checkbox');
