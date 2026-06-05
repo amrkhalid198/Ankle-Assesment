@@ -21,9 +21,9 @@
         <div class="progress-fill" id="progressFill"></div>
       </div>
       <div class="progress-labels">
-        <span class="progress-phase" id="phaseLabel1" data-i18n="progress.phase1">المرحلة ١</span>
-        <span class="progress-phase" id="phaseLabel2" data-i18n="progress.phase2">المرحلة ٢</span>
         <span class="progress-phase" id="phaseLabelR" data-i18n="progress.results">النتائج</span>
+        <span class="progress-phase" id="phaseLabel2" data-i18n="progress.phase2">المرحلة ٢</span>
+        <span class="progress-phase" id="phaseLabel1" data-i18n="progress.phase1">المرحلة ١</span>
       </div>
     </div>
 
@@ -86,7 +86,7 @@
       <!-- PHASE 1: Medical Disclaimer Gateway (Hard-Gate) -->
       <div class="screen hidden" id="screen-legal">
         <div class="screen-content">
-          <div class="phase-label">Armor Protocol — Gateway</div>
+          <div class="phase-label">Ankle Protocol — Gateway</div>
           <h2 class="question-text">إخلاء مسؤولية طبي</h2>
           <p class="question-subtext" style="color: var(--color-warning);">
             <svg style="width:16px;height:16px;stroke:var(--color-warning);fill:none;stroke-width:1.5;vertical-align:middle;margin-left:6px;" viewBox="0 0 20 20"><path d="M10 2 L18 17 H2 Z" /><line x1="10" y1="8" x2="10" y2="12" /><circle cx="10" cy="14.5" r="0.5" fill="var(--color-warning)" /></svg>
@@ -123,7 +123,7 @@
       <!-- PHASE 2: Timeline Filter -->
       <div class="screen hidden" id="screen-timeline">
         <div class="screen-content">
-          <div class="phase-label">Armor Protocol — Gateway</div>
+          <div class="phase-label">Ankle Protocol — Gateway</div>
           <h2 class="question-text">تاريخ الإصابة</h2>
           <p class="question-subtext">إمتى كانت آخر مرة حصلك فيها التواء (Sprain) في الكاحل؟</p>
           
@@ -166,7 +166,7 @@
       <!-- PHASE 3: Triage Questions -->
       <div class="screen hidden" id="screen-triage">
         <div class="screen-content">
-          <div class="phase-label">Armor Protocol — Gateway</div>
+          <div class="phase-label">Ankle Protocol — Gateway</div>
           <h2 class="question-text">تقييم الأعراض</h2>
           <p class="question-subtext">برجاء الإجابة على الأسئلة دي عشان نتأكد إن الاختبار آمن ليك:</p>
           
@@ -243,7 +243,7 @@
         <div class="screen-content" style="text-align: center;">
           <div class="go-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" /><polyline points="7,10 9.5,12.5 13.5,7.5" /></svg></div>
           <h2 class="question-text" style="color: var(--color-success);">تم اجتياز التقييم الطبي</h2>
-          <p style="color: var(--text-secondary); margin-bottom: 32px;">حالتك تسمح بإجراء اختبارات Armor Protocol. هنبدأ دلوقتي في التقييم الوظيفي.</p>
+          <p style="color: var(--text-secondary); margin-bottom: 32px;">حالتك تسمح بإجراء اختبارات Ankle Protocol. هنبدأ دلوقتي في التقييم الوظيفي.</p>
           <button id="btn-start-tests" class="btn-primary">ابدأ الاختبار الأول</button>
         </div>
       </div>
@@ -632,7 +632,7 @@
               </svg>
               <div class="score-text">
                 <div class="score-number" id="scoreValue">0</div>
-                <div class="score-total" data-i18n="results.scoreTotal">/ ١٠٠</div>
+                <div class="score-total" data-i18n="results.scoreTotal">/ 100</div>
               </div>
             </div>
           </div>
@@ -671,10 +671,10 @@
 
           <div class="cta-section">
             <div class="cta-card">
-              <div class="cta-badge">ARMOR PROTOCOL</div>
+              <div class="cta-badge">ANKLE PROTOCOL</div>
               <h3>التقييم كشف الخلل.. التمارين العشوائية مش هتحله.</h3>
               <p id="ctaText"></p>
-              <a href="https://amrkhalid198.github.io/Landing-page/#payment" target="_blank" rel="noopener" class="btn-cta" id="ctaButton">احصل على الـ ARMOR PROTOCOL الكامل</a>
+              <a href="https://amrkhalid198.github.io/Landing-page/" target="_blank" rel="noopener" class="btn-cta" id="ctaButton">احصل على الـ ANKLE PROTOCOL الكامل</a>
               <p class="cta-reassurance">نظام تأهيل مبني على تدرج علمي في الأحمال — مش مجرد تمارين عشوائية.</p>
             </div>
           </div>
@@ -702,6 +702,7 @@
   </div>
 
   <script src="i18n.js"></script>
+  <script>I18n.init();</script>
   <script src="scoring.js"></script>
   <script src="timer.js"></script>
   <script src="charts.js"></script>
