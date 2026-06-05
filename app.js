@@ -155,6 +155,9 @@
   // ============================================
   // Clinical Gateway Flow (Armor Protocol)
   // ============================================
+  // Track current gateway screen for back navigation
+  var currentGatewayScreen = null;
+
   function gateNavigate(currentId, nextId) {
     const current = $(currentId);
     const next = $(nextId);
@@ -164,8 +167,11 @@
       current.classList.add('hidden');
     }
     if (next) {
+      currentGatewayScreen = nextId;
       next.classList.remove('hidden');
       setTimeout(() => next.classList.add('active'), 50);
+    } else {
+      currentGatewayScreen = null;
     }
   }
 
@@ -180,6 +186,7 @@
     // Intercept initial Welcome Screen "Start" button
     $('startBtn').addEventListener('click', () => {
       state.onLegalScreen = true;
+      currentGatewayScreen = null; // legal uses onLegalScreen flag, not gateway tracker
       gateNavigate('screen-welcome', 'screen-legal');
       updateBackButton();
     });
@@ -194,8 +201,8 @@
     if (btnLegalNext) {
       btnLegalNext.addEventListener('click', () => {
         state.onLegalScreen = false;
-        gateNavigate('screen-legal', null);
-        goToStep(1);
+        currentGatewayScreen = null;
+        gateNavigate('screen-legal', 'screen-timeline');
       });
     }
 
@@ -245,16 +252,50 @@
         goToStep(1); // Proceed to Phase 1 history
       });
     }
+
+    // Hard Stop -> Restart button (full reset back to welcome)
+    var hardStopRestart = $('hardStopRestartBtn');
+    if (hardStopRestart) {
+      hardStopRestart.addEventListener('click', function() {
+        gateNavigate('screen-hard-stop', null);
+        currentGatewayScreen = null;
+        $('screen-welcome').classList.remove('hidden');
+        $('screen-welcome').classList.add('active');
+        updateBackButton();
+      });
+    }
   }
 
   // ============================================
   // Back Navigation
   // ============================================
   function prevStep() {
+    // Gateway back navigation — timeline → legal, triage → timeline, green-light → timeline
+    if (currentGatewayScreen === 'screen-timeline') {
+      gateNavigate('screen-timeline', null);
+      currentGatewayScreen = null;
+      state.onLegalScreen = true;
+      var legal = $('screen-legal');
+      legal.classList.remove('hidden');
+      setTimeout(function() { legal.classList.add('active'); }, 50);
+      updateBackButton();
+      return;
+    }
+    if (currentGatewayScreen === 'screen-triage') {
+      gateNavigate('screen-triage', 'screen-timeline');
+      updateBackButton();
+      return;
+    }
+    if (currentGatewayScreen === 'screen-green-light') {
+      gateNavigate('screen-green-light', 'screen-timeline');
+      updateBackButton();
+      return;
+    }
     if (state.onLegalScreen) {
       // Legal → Welcome
       gateNavigate('screen-legal', null);
       state.onLegalScreen = false;
+      currentGatewayScreen = null;
       state.currentStep = 0;
       $('screen-welcome').classList.remove('hidden');
       $('screen-welcome').classList.add('active');
@@ -279,7 +320,9 @@
   function updateBackButton() {
     const btn = $('backBtn');
     if (!btn) return;
-    if (state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
+    var onGateway = currentGatewayScreen !== null &&
+                    currentGatewayScreen !== 'screen-hard-stop'; // hard-stop has its own restart
+    if (onGateway || state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
       btn.style.display = 'flex';
     } else {
       btn.style.display = 'none';
@@ -324,48 +367,78 @@
   // ============================================
   // Confidence sliders (Egyptian Arabic Hardcoded)
   // ============================================
-  function setupSliders() {
-    const confSlider = $('confidenceSlider');
-    const fearSlider = $('fearSlider');
+  var _slidersInitialized = false;
 
-    // Hardcoded Egyptian Arabic Labels
+  function syncSliders() {
+    var confSlider = $('confidenceSlider');
+    var fearSlider = $('fearSlider');
+    if (!confSlider || !fearSlider) return;
+
     function getConfLabel(v) {
-      if (v <= 3) return "مفيش ثقة خالص"; // No confidence
-      if (v <= 7) return "ثقة متوسطة";    // Moderate
-      return "ثقة كاملة";                 // Full confidence
+      if (v <= 3) return "مفيش ثقة خالص";
+      if (v <= 7) return "ثقة متوسطة";
+      return "ثقة كاملة";
     }
-    
     function getFearLabel(v) {
-      if (v <= 3) return "مأثر عليا جداً"; // Affecting me a lot
-      if (v <= 7) return "تأثير متوسط";    // Moderate effect
-      return "مفيش خوف خالص";              // No fear at all
+      if (v <= 3) return "مأثر عليا جداً";
+      if (v <= 7) return "تأثير متوسط";
+      return "مفيش خوف خالص";
     }
-
     function sync(slider, numEl, labelEl, labelFn) {
-      const v = parseInt(slider.value, 10);
+      var v = parseInt(slider.value, 10);
       numEl.textContent   = v;
       labelEl.textContent = labelFn(v);
-      
-      // Fill the track
-      const pct = ((v - 1) / 9) * 100;
+      var pct = ((v - 1) / 9) * 100;
+      slider.style.background =
+        'linear-gradient(to right, var(--accent) ' + pct + '%, var(--bg-card) ' + pct + '%)';
+    }
+    sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel);
+    sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel);
+  }
+
+  function setupSliders() {
+    var confSlider = $('confidenceSlider');
+    var fearSlider = $('fearSlider');
+    if (!confSlider || !fearSlider) return;
+
+    function getConfLabel(v) {
+      if (v <= 3) return "مفيش ثقة خالص";
+      if (v <= 7) return "ثقة متوسطة";
+      return "ثقة كاملة";
+    }
+    function getFearLabel(v) {
+      if (v <= 3) return "مأثر عليا جداً";
+      if (v <= 7) return "تأثير متوسط";
+      return "مفيش خوف خالص";
+    }
+    function sync(slider, numEl, labelEl, labelFn) {
+      var v = parseInt(slider.value, 10);
+      numEl.textContent   = v;
+      labelEl.textContent = labelFn(v);
+      var pct = ((v - 1) / 9) * 100;
       slider.style.background =
         'linear-gradient(to right, var(--accent) ' + pct + '%, var(--bg-card) ' + pct + '%)';
     }
 
-    confSlider.addEventListener('input', () =>
-      sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel));
-    fearSlider.addEventListener('input', () =>
-      sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel));
+    // Attach listeners only ONCE — retake just resyncs visuals via syncSliders()
+    if (!_slidersInitialized) {
+      confSlider.addEventListener('input', function() {
+        sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel);
+      });
+      fearSlider.addEventListener('input', function() {
+        sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel);
+      });
+      $('confidenceNext').addEventListener('click', function() {
+        state.answers.movement_confidence = parseInt(confSlider.value, 10);
+        state.answers.fear_reinjury       = parseInt(fearSlider.value, 10);
+        nextStep();
+      });
+      _slidersInitialized = true;
+    }
 
-    // Init slider visuals
+    // Always sync visuals (init display + retake reset)
     sync(confSlider, $('confidenceValue'), $('confidenceLabel'), getConfLabel);
     sync(fearSlider, $('fearValue'), $('fearLabel'), getFearLabel);
-
-    $('confidenceNext').addEventListener('click', () => {
-      state.answers.movement_confidence = parseInt(confSlider.value, 10);
-      state.answers.fear_reinjury       = parseInt(fearSlider.value, 10);
-      nextStep();
-    });
   }
 
   // ============================================
@@ -500,8 +573,19 @@
     // ── Category bars ──
     renderCategoryBars(categories);
 
-    // ── Insights ──
-    $('insightsText').innerHTML = ScoringEngine.getInsights(tier, categories).replace(/\n/g, '<br>');
+    // -- Insights: read directly from I18n (bypasses old ScoringEngine.getInsights) --
+    var insightText = I18n.t('insight.' + tier.id);
+
+    var weakest = Object.entries(categories)
+      .sort(function(a, b) { return a[1].percentage - b[1].percentage; })[0];
+
+    if (weakest[1].percentage < 50) {
+      insightText += I18n.t('insight.weakest')
+        .replace('{label}', weakest[1].label)
+        .replace('{pct}', weakest[1].percentage);
+    }
+
+    $('insightsText').textContent = insightText;
 
     // ── Action steps ──
     var steps = ScoringEngine.getActionableSteps(tier);
@@ -584,7 +668,7 @@
     if(submitBtn) {
       submitBtn.addEventListener('click', function () {
         var email = $('gateEmailInput').value.trim();
-        if (email && email.includes('@') && email.includes('.')) {
+        if (email && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
           errorEl.style.display = 'none';
 
           // Pre-calculate results
@@ -636,6 +720,32 @@
       // Reset timer ring
       var circ = 2 * Math.PI * 90;
       $('timerRingFill').style.strokeDashoffset = circ;
+
+      // Reset score ring (so 2nd run doesn't start from old position)
+      var scoreCirc = 2 * Math.PI * 80;
+      var scoreRing = $('scoreRingFill');
+      if (scoreRing) {
+        scoreRing.style.strokeDashoffset = scoreCirc;
+        scoreRing.style.stroke = 'var(--accent)';
+      }
+      var scoreVal = $('scoreValue');
+      if (scoreVal) { scoreVal.textContent = '0'; scoreVal.style.color = ''; }
+
+      // Clear tier badge and insights so no stale content flashes
+      var tb = $('tierBadge');
+      if (tb) tb.innerHTML = '';
+      var it = $('insightsText');
+      if (it) it.textContent = '';
+      var al = $('actionStepsList');
+      if (al) al.innerHTML = '';
+      var cb = $('categoryBars');
+      if (cb) cb.innerHTML = '';
+      var ct = $('ctaText');
+      if (ct) ct.textContent = '';
+
+      // Reset calfCount transform (may be stuck at scale(1.15))
+      var calfEl = $('calfCount');
+      if (calfEl) calfEl.style.transform = 'scale(1)';
 
       // Uncheck Gate Radios & Checkboxes
       const legalCheckbox = $('legal-checkbox');
