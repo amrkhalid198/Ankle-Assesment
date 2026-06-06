@@ -23,23 +23,22 @@
   // Screen ids in core testing step order (Gateway screens handled separately)
   const SCREENS = [
     'screen-welcome',      // 0
-    'screen-sport',        // 1 (Green light drops users here)
-    'screen-q1',           // 2
-    'screen-q2',           // 3
-    'screen-q3',           // 4
-    'screen-confidence',   // 5
-    'screen-phase2',       // 6
-    'screen-balance',      // 7
-    'screen-calfraise',    // 8
-    'screen-sidehop',      // 9
-    'screen-email-gate',   // 10
-    'screen-results'       // 11
+    'screen-sport',        // 1  (Legal gateway drops users here)
+    'screen-q1',           // 2  sprain_count
+    'screen-q3',           // 3  giving_way  (last_sprain screen removed)
+    'screen-confidence',   // 4
+    'screen-phase2',       // 5
+    'screen-balance',      // 6
+    'screen-calfraise',    // 7
+    'screen-sidehop',      // 8
+    'screen-email-gate',   // 9
+    'screen-results'       // 10
   ];
 
-  const PHASE_1_END   = 5;
-  const PHASE_2_END   = 9;
-  const EMAIL_GATE    = 10;
-  const RESULTS_STEP  = 11;
+  const PHASE_1_END   = 4;   // confidence is last Phase-1 screen
+  const PHASE_2_END   = 8;   // sidehop is last Phase-2 screen
+  const EMAIL_GATE    = 9;
+  const RESULTS_STEP  = 10;
 
   // ============================================
   // Helpers
@@ -84,8 +83,8 @@
 
   // Reset a physical test screen to its initial state so it can be retaken
   function resetTestScreen(step) {
-    const BALANCE_STEP   = 7;
-    const CALFRAISE_STEP = 8;
+    const BALANCE_STEP   = 6;
+    const CALFRAISE_STEP = 7;
 
     if (step === BALANCE_STEP) {
       // Stop any running timer first
@@ -171,87 +170,29 @@
   }
 
   function setupClinicalGate() {
-    // Buttons & Inputs
-    const btnLegalNext = $('btn-legal-next');
+    const btnLegalNext  = $('btn-legal-next');
     const legalCheckbox = $('legal-checkbox');
-    const timelineRadios = document.querySelectorAll('input[name="timeline"]');
-    const btnTriageSubmit = $('btn-triage-submit');
-    const btnStartTests = $('btn-start-tests');
 
-    // Intercept initial Welcome Screen "Start" button
+    // Welcome "Start" → Legal disclaimer
     $('startBtn').addEventListener('click', () => {
       state.onLegalScreen = true;
       gateNavigate('screen-welcome', 'screen-legal');
       updateBackButton();
     });
 
-    // Phase 1: Legal Gateway
+    // Checkbox enables the proceed button
     if (legalCheckbox) {
       legalCheckbox.addEventListener('change', (e) => {
         btnLegalNext.disabled = !e.target.checked;
       });
     }
-    
+
+    // Legal "موافق" → straight into the assessment (Step 1: Sport Selection)
     if (btnLegalNext) {
       btnLegalNext.addEventListener('click', () => {
         state.onLegalScreen = false;
-        gateNavigate('screen-legal', 'screen-timeline');
-        updateBackButton();
-      });
-    }
-
-    // Phase 2: Timeline Filter
-    timelineRadios.forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        const val = e.target.value;
-        if (val === 'acute') {
-          // < 1 Month -> Hard Stop
-          gateNavigate('screen-timeline', 'screen-hard-stop');
-        } else if (val === 'chronic') {
-          // > 3 Months -> Skip Triage, Green Light
-          gateNavigate('screen-timeline', 'screen-green-light');
-        } else if (val === 'sub-acute') {
-          // 1 to 3 Months -> Ask Triage Questions
-          gateNavigate('screen-timeline', 'screen-triage');
-        }
-      });
-    });
-
-    // Phase 3 & 4: Triage Submission Logic
-    if (btnTriageSubmit) {
-      btnTriageSubmit.addEventListener('click', () => {
-        const q1 = document.querySelector('input[name="q1"]:checked');
-        const q2 = document.querySelector('input[name="q2"]:checked');
-        const q3 = document.querySelector('input[name="q3"]:checked');
-
-        // Validation
-        if (!q1 || !q2 || !q3) {
-          alert("Please answer all questions before proceeding. / لازم تجاوب على كل الأسئلة الأول.");
-          return;
-        }
-
-        // Branching: Any "Yes" -> Hard Stop. All "No" -> Green Light.
-        if (q1.value === 'yes' || q2.value === 'yes' || q3.value === 'yes') {
-          gateNavigate('screen-triage', 'screen-hard-stop');
-        } else {
-          gateNavigate('screen-triage', 'screen-green-light');
-        }
-      });
-    }
-
-    // Green Light -> Drop user into actual Assessment Flow (Step 1: Sport Selection)
-    if (btnStartTests) {
-      btnStartTests.addEventListener('click', () => {
-        gateNavigate('screen-green-light', null); // Hide green light screen
-        goToStep(1); // Proceed to Phase 1 history
-      });
-    }
-
-    // Hard Stop Restart button → triggers full retake
-    const btnHardStopRestart = $('btn-hard-stop-restart');
-    if (btnHardStopRestart) {
-      btnHardStopRestart.addEventListener('click', () => {
-        $('retakeBtn').click();
+        gateNavigate('screen-legal', null); // hide legal screen
+        goToStep(1);                        // enter main flow
       });
     }
   }
@@ -260,43 +201,8 @@
   // Back Navigation
   // ============================================
   function prevStep() {
-    // Determine which gateway screen is currently visible
-    const hardStop   = $('screen-hard-stop');
-    const greenLight = $('screen-green-light');
-    const triage     = $('screen-triage');
-    const timeline   = $('screen-timeline');
-    const legal      = $('screen-legal');
-
+    const legal = $('screen-legal');
     const isVisible = (el) => el && el.classList.contains('active') && !el.classList.contains('hidden');
-
-    if (isVisible(hardStop) || isVisible(greenLight)) {
-      // Hard stop / green light → timeline
-      if (isVisible(hardStop))   gateNavigate('screen-hard-stop',   null);
-      if (isVisible(greenLight)) gateNavigate('screen-green-light', null);
-      // Un-check timeline radios before showing
-      document.querySelectorAll('input[name="timeline"]').forEach(r => r.checked = false);
-      const tlScreen = $('screen-timeline');
-      tlScreen.classList.remove('hidden');
-      setTimeout(() => tlScreen.classList.add('active'), 50);
-      return;
-    }
-
-    if (isVisible(triage)) {
-      // Triage → timeline
-      gateNavigate('screen-triage', null);
-      const tlScreen = $('screen-timeline');
-      tlScreen.classList.remove('hidden');
-      setTimeout(() => tlScreen.classList.add('active'), 50);
-      return;
-    }
-
-    if (isVisible(timeline)) {
-      // Timeline → legal
-      gateNavigate('screen-timeline', null);
-      legal.classList.remove('hidden');
-      setTimeout(() => legal.classList.add('active'), 50);
-      return;
-    }
 
     if (state.onLegalScreen) {
       // Legal → Welcome
@@ -306,11 +212,9 @@
       $('screen-welcome').classList.remove('hidden');
       $('screen-welcome').classList.add('active');
     } else if (state.currentStep === 1) {
-      // First test → Legal
+      // First test screen → Legal
       const current = $(SCREENS[1]);
-      if (current) {
-        current.classList.remove('active');
-      }
+      if (current) current.classList.remove('active');
       state.currentStep = 0;
       $('progressContainer').style.display = 'none';
       state.onLegalScreen = true;
@@ -326,13 +230,11 @@
     const btn = $('backBtn');
     if (!btn) return;
 
-    const gatewayScreenIds = ['screen-legal', 'screen-timeline', 'screen-triage', 'screen-hard-stop', 'screen-green-light'];
-    const anyGatewayActive = gatewayScreenIds.some(id => {
-      const el = $(id);
-      return el && el.classList.contains('active') && !el.classList.contains('hidden');
-    });
+    // Only screen-legal remains as a gateway screen
+    const legalEl = $('screen-legal');
+    const legalActive = legalEl && legalEl.classList.contains('active') && !legalEl.classList.contains('hidden');
 
-    if (anyGatewayActive || state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
+    if (legalActive || state.onLegalScreen || (state.currentStep >= 1 && state.currentStep < RESULTS_STEP)) {
       btn.style.display = 'flex';
     } else {
       btn.style.display = 'none';
@@ -467,7 +369,7 @@
     if (tv) tv.textContent = Math.floor(elapsed) + 's';
     // Only auto-advance if the user is still on the balance screen
     setTimeout(function() {
-      if (state.currentStep === 7) nextStep();
+      if (state.currentStep === 6) nextStep();
     }, 800);
   }
 
