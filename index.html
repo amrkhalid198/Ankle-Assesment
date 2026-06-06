@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
@@ -80,13 +80,13 @@
       </div>
 
       <!-- ========================================== -->
-      <!-- ARMOR PROTOCOL: CLINICAL GATEWAY SCREENS   -->
+      <!-- CLINICAL GATEWAY: Medical Disclaimer Only  -->
       <!-- ========================================== -->
 
-      <!-- PHASE 1: Medical Disclaimer Gateway (Hard-Gate) -->
+      <!-- Legal Disclaimer — Single Hard Gate -->
       <div class="screen hidden" id="screen-legal">
         <div class="screen-content">
-          <div class="phase-label">Ankle Protocol — Gateway</div>
+          <div class="phase-label">Ankle Protocol — الإقرار الطبي</div>
           <h2 class="question-text">إخلاء مسؤولية طبي</h2>
           <p class="question-subtext" style="color: var(--color-warning);">
             <svg style="width:16px;height:16px;stroke:var(--color-warning);fill:none;stroke-width:1.5;vertical-align:middle;margin-left:6px;" viewBox="0 0 20 20"><path d="M10 2 L18 17 H2 Z" /><line x1="10" y1="8" x2="10" y2="12" /><circle cx="10" cy="14.5" r="0.5" fill="var(--color-warning)" /></svg>
@@ -95,7 +95,7 @@
           
           <div class="disclaimer-box">
             <p class="disclaimer-lead-text">
-              <strong>هذا التقييم مصمم خصيصاً للتعامل مع حالات عدم الثبات المزمن (Chronic Instability) واختبار العودة الى الرياضة.</strong>
+              <strong>هذا التقييم مصمم خصيصاً للتعامل مع حالات عدم الثبات المزمن (Chronic Instability) واختبار العودة إلى الرياضة.</strong>
             </p>
             <p class="disclaimer-prohibition-text">
               يُمنع منعاً باتاً استخدام هذا التقييم إذا كنت تعاني من أي من الأعراض التالية:
@@ -116,140 +116,12 @@
             </label>
           </div>
           
-          <button id="btn-legal-next" class="btn-primary" disabled>موافق — متابعة</button>
-        </div>
-      </div>
-
-      <!-- PHASE 2: Timeline Filter -->
-      <div class="screen hidden" id="screen-timeline">
-        <div class="screen-content">
-          <div class="phase-label">Ankle Protocol — Gateway</div>
-          <h2 class="question-text">تاريخ الإصابة</h2>
-          <p class="question-subtext">إمتى كانت آخر مرة حصلك فيها التواء (Sprain) في الكاحل؟</p>
-          
-          <div class="option-cards" id="timeline-options">
-            
-            <label class="option-card radio-label-card">
-              <input type="radio" name="timeline" value="acute" class="hidden-radio">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><path d="M10 2 v6 M10 12 v6 M6 6 h8 M6 14 h8" /><rect x="5" y="2" width="10" height="16" rx="2" fill="none" /></svg></div>
-              <div class="option-info">
-                <div class="option-label">من أقل من شهر</div>
-                <div class="option-desc">إصابة حديثة (Acute) — تورم أو ألم نشط</div>
-              </div>
-              <div class="option-check radio-check"></div>
-            </label>
-            
-            <label class="option-card radio-label-card">
-              <input type="radio" name="timeline" value="sub-acute" class="hidden-radio">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2" /><line x1="3" y1="7" x2="17" y2="7" /><line x1="7" y1="3" x2="7" y2="7" /><line x1="13" y1="3" x2="13" y2="7" /></svg></div>
-              <div class="option-info">
-                <div class="option-label">من شهر لـ ٣ شهور</div>
-                <div class="option-desc">مرحلة التعافي المتوسطة (Sub-acute)</div>
-              </div>
-              <div class="option-check radio-check"></div>
-            </label>
-            
-            <label class="option-card radio-label-card">
-              <input type="radio" name="timeline" value="chronic" class="hidden-radio">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2" /><line x1="3" y1="7" x2="17" y2="7" /><polyline points="8,11 10,13 13,10" /></svg></div>
-              <div class="option-info">
-                <div class="option-label">من أكتر من ٣ شهور</div>
-                <div class="option-desc">إصابة قديمة (Chronic Instability)</div>
-              </div>
-              <div class="option-check radio-check"></div>
-            </label>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- PHASE 3: Triage Questions -->
-      <div class="screen hidden" id="screen-triage">
-        <div class="screen-content">
-          <div class="phase-label">Ankle Protocol — Gateway</div>
-          <h2 class="question-text">تقييم الأعراض</h2>
-          <p class="question-subtext">برجاء الإجابة على الأسئلة دي عشان نتأكد إن الاختبار آمن ليك:</p>
-          
-          <div class="triage-form">
-            
-            <div class="triage-question-block">
-              <h3 class="triage-q-title">١. هل عندك تورم شديد أو كدمات واضحة حالياً؟</h3>
-              <div class="triage-options">
-                <label class="triage-btn">
-                  <input type="radio" name="q1" value="yes" class="hidden-radio">
-                  <span class="triage-btn-text">أيوة</span>
-                </label>
-                <label class="triage-btn">
-                  <input type="radio" name="q1" value="no" class="hidden-radio">
-                  <span class="triage-btn-text">لأ</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="triage-question-block">
-              <h3 class="triage-q-title">٢. هل بتواجه صعوبة أو ألم يخليك تعرج لو مشيت ٤ خطوات؟</h3>
-              <div class="triage-options">
-                <label class="triage-btn">
-                  <input type="radio" name="q2" value="yes" class="hidden-radio">
-                  <span class="triage-btn-text">أيوة</span>
-                </label>
-                <label class="triage-btn">
-                  <input type="radio" name="q2" value="no" class="hidden-radio">
-                  <span class="triage-btn-text">لأ</span>
-                </label>
-              </div>
-            </div>
-
-            <div class="triage-question-block">
-              <h3 class="triage-q-title">٣. هل بتحس بألم حاد في الكاحل حتى وقت الراحة؟</h3>
-              <div class="triage-options">
-                <label class="triage-btn">
-                  <input type="radio" name="q3" value="yes" class="hidden-radio">
-                  <span class="triage-btn-text">أيوة</span>
-                </label>
-                <label class="triage-btn">
-                  <input type="radio" name="q3" value="no" class="hidden-radio">
-                  <span class="triage-btn-text">لأ</span>
-                </label>
-              </div>
-            </div>
-
-            <button id="btn-triage-submit" class="btn-primary" style="margin-top: 16px;">تأكيد الإجابات</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- PHASE 4A: HARD STOP -->
-      <div class="screen hidden stop-screen" id="screen-hard-stop">
-        <div class="screen-content">
-          <div class="stop-icon"><svg viewBox="0 0 20 20"><polygon points="6,2 14,2 18,6 18,14 14,18 6,18 2,14 2,6" /><line x1="7" y1="7" x2="13" y2="13" /><line x1="13" y1="7" x2="7" y2="13" /></svg></div>
-          <h2 class="question-text" style="text-align: center; color: var(--color-danger);">لا يمكن إجراء الاختبار</h2>
-          <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px;">بناءً على إجاباتك، كاحلك لسه في مرحلة التعافي الأولى (Acute Phase). أداء اختبارات القوة والانفجارية دلوقتي بيمثل خطر كبير للإصابة.</p>
-          
-          <div class="first-aid-guide">
-            <h3>دليل الإسعافات الأولية السريعة</h3>
-            <ul>
-              <li><strong>الحماية:</strong> تجنب أي حركة تسبب ألم حاد.</li>
-              <li><strong>الراحة:</strong> خفف التحميل على رجلك لو المشي بيوجعك.</li>
-              <li><strong>الثلج والضغط:</strong> استخدم الثلج ورباط ضاغط للسيطرة على التورم.</li>
-              <li><strong>الاستشارة:</strong> ضروري تراجع دكتور علاج طبيعي متخصص في الإصابات الرياضية قبل أي تأهيل.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <!-- PHASE 4B: GREEN LIGHT -->
-      <div class="screen hidden go-screen" id="screen-green-light">
-        <div class="screen-content" style="text-align: center;">
-          <div class="go-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" /><polyline points="7,10 9.5,12.5 13.5,7.5" /></svg></div>
-          <h2 class="question-text" style="color: var(--color-success);">تم اجتياز التقييم الطبي</h2>
-          <p style="color: var(--text-secondary); margin-bottom: 32px;">حالتك تسمح بإجراء اختبارات Ankle Protocol. هنبدأ دلوقتي في التقييم الوظيفي.</p>
-          <button id="btn-start-tests" class="btn-primary">ابدأ الاختبار الأول</button>
+          <button id="btn-legal-next" class="btn-primary" disabled>موافق — ابدأ التقييم</button>
         </div>
       </div>
 
       <!-- ========================================== -->
-      <!-- END GATEWAY SCREENS                        -->
+      <!-- END GATEWAY                                 -->
       <!-- ========================================== -->
 
 
@@ -299,7 +171,7 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-q1" data-step="1">
+      <div class="screen" id="screen-q1" data-step="2">
         <div class="screen-content">
           <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
           <h2 class="question-text" data-i18n="q1.title">كم مرة التوى كاحلك؟</h2>
@@ -335,49 +207,6 @@
               <div class="option-info">
                 <div class="option-label" data-i18n="q1.opt4.label">٤ مرات أو أكثر</div>
                 <div class="option-desc" data-i18n="q1.opt4.desc">التواءات متكررة ومتتالية</div>
-              </div>
-              <div class="option-check"></div>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="screen" id="screen-q2" data-step="2">
-        <div class="screen-content">
-          <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
-          <h2 class="question-text" data-i18n="q2.title">متى كانت آخر مرة التوى أو انخلع فيها كاحلك؟</h2>
-          <p class="question-subtext" data-i18n="q2.subtitle">فكّر في آخر مرة شعرت فيها بعدم ثبات كاحلك أو انثنى.</p>
-
-          <div class="option-cards" data-question="last_sprain">
-            <button class="option-card" data-score="10">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><polyline points="7,10 9.5,12.5 13.5,7.5" /></svg></div>
-              <div class="option-info">
-                <div class="option-label" data-i18n="q2.opt1.label">أكثر من سنة</div>
-                <div class="option-desc" data-i18n="q2.opt1.desc">مضى أكثر من ١٢ شهراً على آخر حادثة</div>
-              </div>
-              <div class="option-check"></div>
-            </button>
-            <button class="option-card" data-score="7">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2" /><line x1="3" y1="7" x2="17" y2="7" /><line x1="7" y1="3" x2="7" y2="7" /><line x1="13" y1="3" x2="13" y2="7" /></svg></div>
-              <div class="option-info">
-                <div class="option-label" data-i18n="q2.opt2.label">٦–١٢ شهراً</div>
-                <div class="option-desc" data-i18n="q2.opt2.desc">خلال السنة الماضية</div>
-              </div>
-              <div class="option-check"></div>
-            </button>
-            <button class="option-card" data-score="4">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><path d="M10 2 L18 17 H2 Z" /><line x1="10" y1="8" x2="10" y2="12" /><circle cx="10" cy="14.5" r="0.5" fill="currentColor" /></svg></div>
-              <div class="option-info">
-                <div class="option-label" data-i18n="q2.opt3.label">١–٦ أشهر</div>
-                <div class="option-desc" data-i18n="q2.opt3.desc">حادثة حديثة نسبياً</div>
-              </div>
-              <div class="option-check"></div>
-            </button>
-            <button class="option-card" data-score="1">
-              <div class="option-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="10" y1="6" x2="10" y2="11" /><circle cx="10" cy="13.5" r="0.7" fill="currentColor" /></svg></div>
-              <div class="option-info">
-                <div class="option-label" data-i18n="q2.opt4.label">خلال الشهر الماضي</div>
-                <div class="option-desc" data-i18n="q2.opt4.desc">حديث جداً — لا يزال في مرحلة التعافي</div>
               </div>
               <div class="option-check"></div>
             </button>
@@ -593,7 +422,7 @@
               <div class="option-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="10" y1="6" x2="10" y2="11" /><circle cx="10" cy="13.5" r="0.7" fill="currentColor" /></svg></div>
               <div class="option-info">
                 <div class="option-label" data-i18n="sidehop.opt4.label">لم أستطع الإكمال</div>
-                <div class="option-desc" data-i18n="sidehop.opt4.desc">توقفت مب مبكراً بسبب الألم أو الخوف أو فقدان التوازن</div>
+                <div class="option-desc" data-i18n="sidehop.opt4.desc">توقفت مبكراً بسبب الألم أو الخوف أو فقدان التوازن</div>
               </div>
               <div class="option-check"></div>
             </button>
@@ -601,7 +430,7 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-email-gate" data-step="10">
+      <div class="screen" id="screen-email-gate" data-step="9">
         <div class="screen-content">
           <div class="email-gate">
             <div class="email-gate-icon"><svg viewBox="0 0 20 20"><rect x="3" y="10" width="3" height="7" rx="1" /><rect x="8.5" y="6" width="3" height="11" rx="1" /><rect x="14" y="3" width="3" height="14" rx="1" /></svg></div>
@@ -616,7 +445,7 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-results" data-step="11">
+      <div class="screen" id="screen-results" data-step="10">
         <div class="screen-content">
 
           <div class="results-header">
