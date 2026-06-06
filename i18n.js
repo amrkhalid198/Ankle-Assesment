@@ -10,22 +10,22 @@ const I18n = {
     // ==========================================
     'welcome.badge': 'ANKLE ASSESSMENT',
     'welcome.title': 'هل الكاحل عندك ثابت <em>فعلا</em>',
-    'welcome.subtitle': 'أداة فحص شاملة للرياضيين. اكتشف مشاكل الـ Instability المخفية، واختبر القدرة الحقيقية للـ Ankle، واعرف خطوات عملية عشان ترجع ثقتك.',
-    'welcome.feature1.title': 'Subjective Screen (الفحص الذاتي)',
-    'welcome.feature1.desc': 'الـ History، الثقة، والجاهزية النفسية',
-    'welcome.feature2.title': 'Physical Stress Tests',
-    'welcome.feature2.desc': 'الـ Balance، الـ Endurance، والـ Power',
-    'welcome.feature3.title': 'Personalized Results',
-    'welcome.feature3.desc': 'مستوى الـ Stability، الـ Deficits، وخطوات عملية',
-    'welcome.startBtn': 'ابدأ الـ Assessment',
+    'welcome.subtitle': 'فحص شامل للرياضيين. اكتشف مشاكل عدم الثبات، اختبر قوة وأداء الكاحل، واعرف طريقك للعودة بثقة.',
+    'welcome.feature1.title': 'الفحص الذاتي',
+    'welcome.feature1.desc': 'تاريخ الاصابة، الثقة والجاهزية النفسية',
+    'welcome.feature2.title': 'اختبارات التحمل البدني',
+    'welcome.feature2.desc': 'التوازن، التحمل، والقوة الانفجارية',
+    'welcome.feature3.title': 'نتائج مخصصة لك',
+    'welcome.feature3.desc': 'مستوى الثبات، نقاط الضعف، والخطوات العملية',
+    'welcome.startBtn': 'ابدأ التقييم',
     'welcome.time': 'هياخد تقريباً ٥ دقايق',
 
     // ==========================================
     // Progress Labels
     // ==========================================
-    'progress.phase1': 'Phase 1',
-    'progress.phase2': 'Phase 2',
-    'progress.results': 'Results',
+    'progress.phase1': 'المرحلة 1',
+    'progress.phase2': 'المرحلة 2',
+    'progress.results': 'النتائج',
 
     // ==========================================
     // Sport Selection
@@ -41,7 +41,7 @@ const I18n = {
     // ==========================================
     // Phase 1 — Instability History
     // ==========================================
-    'phase1.label': 'Phase 1 — Instability History',
+    'phase1.label': 'المرحلة الأولى — تاريخ عدم الثبات',
 
     // Q1 — Sprain Count
     'q1.title': 'جالك Ankle Sprain كام مرة؟',
@@ -51,13 +51,13 @@ const I18n = {
     'q1.opt2.label': 'مرة واحدة',
     'q1.opt2.desc': 'حصلت مرة واحدة بس',
     'q1.opt3.label': '٢–٣ مرات',
-    'q1.opt3.desc': 'أكتر من Sprain على فترات',
+    'q1.opt3.desc': 'أكتر من التواء على فترات',
     'q1.opt4.label': '٤ مرات أو أكتر',
     'q1.opt4.desc': 'إصابات متكررة (Recurrent)',
 
     // Q2 — Last Sprain
-    'q2.title': 'إمتى كانت آخر مرة جالك فيها Sprain أو المفصل فلت؟',
-    'q2.subtitle': 'افتكر آخر مرة حسيت فيها بـ Instability.',
+    'q2.title': 'آخر مرة حصلك التواء في الكاحل أو حسيت إن الكاحل فلت منك كانت إمتى؟',
+    'q2.subtitle': 'افتكر آخر مرة حسيت فيها بـعدم ثبات.',
     'q2.opt1.label': 'من أكتر من سنة',
     'q2.opt1.desc': 'عدى أكتر من ١٢ شهر على آخر مرة',
     'q2.opt2.label': '٦–١٢ شهر',
@@ -65,7 +65,7 @@ const I18n = {
     'q2.opt3.label': '١–٦ شهور',
     'q2.opt3.desc': 'إصابة قريبة نسبياً',
     'q2.opt4.label': 'الشهر اللي فات',
-    'q2.opt4.desc': 'حديثة جداً — لسه في مرحلة الـ Rehab',
+    'q2.opt4.desc': 'حديثة — لسه في مرحلة الـتعافي',
 
     // Q3 — Giving Way
     'q3.title': 'كل قد إيه بتحس بـ Giving way أو إن الـ Ankle هيخونك؟',
