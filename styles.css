@@ -404,43 +404,84 @@ body::before {
 }
 .checkbox-label {
   display: flex;
+  flex-direction: row;
   align-items: flex-start;
   gap: var(--sp-md);
   cursor: pointer;
   font-family: var(--font-body);
 }
-[dir="rtl"] .checkbox-label { flex-direction: row-reverse; }
+/* RTL: DOM order is text(1st) then checkbox(2nd).
+   row-reverse makes checkbox appear visually first = far right. */
+[dir="rtl"] .checkbox-label {
+  flex-direction: row-reverse;
+}
 .checkbox-text {
+  flex: 1;
   font-size: 14px;
   color: var(--text-primary);
-  line-height: 1.75; /* generous for Arabic */
+  line-height: 1.8;
   text-align: right;
 }
-/* Hide Native Checkbox */
+/* Hide native checkbox */
 .checkbox-label input[type="checkbox"] {
   position: absolute; opacity: 0; width: 0; height: 0;
 }
-/* Custom Clinical Checkbox */
+
+/* ── Custom Checkbox — Prominent Orange Design ── */
 .custom-checkbox {
-  width: 22px; height: 22px; min-width: 22px;
+  width: 26px; height: 26px; min-width: 26px;
   background: var(--bg-secondary);
-  border: 1.5px solid var(--border-default);
-  border-radius: 4px;
+  /* Thick orange stroke — immediately visible, not hidden */
+  border: 2px solid var(--accent);
+  border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
-  transition: all var(--t-default);
-  margin-top: 2px;
+  transition: all 200ms ease;
+  margin-top: 1px;
+  flex-shrink: 0;
+  /* Pulsing orange glow so users notice there's something to tap */
+  box-shadow:
+    0 0 0 3px rgba(232, 102, 61, 0.15),
+    0 0 12px rgba(232, 102, 61, 0.12);
+  animation: checkbox-breathe 2.5s ease-in-out infinite;
 }
-.checkbox-label:hover .custom-checkbox {
-  border-color: var(--accent);
+
+@keyframes checkbox-breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px rgba(232, 102, 61, 0.12),
+      0 0 10px rgba(232, 102, 61, 0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(232, 102, 61, 0.22),
+      0 0 18px rgba(232, 102, 61, 0.18);
+  }
 }
+
+/* Stop pulsing once checked — task done */
 .checkbox-label:has(input:checked) .custom-checkbox {
+  animation: none;
   background: var(--accent);
   border-color: var(--accent);
+  box-shadow:
+    0 0 0 4px rgba(232, 102, 61, 0.20),
+    0 0 16px rgba(232, 102, 61, 0.25);
 }
 .checkbox-label:has(input:checked) .custom-checkbox::after {
   content: '✓';
-  color: var(--bg-primary);
-  font-size: 13px; font-weight: 700;
+  color: #0C0E10;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Hover — deepen the glow */
+.checkbox-label:hover .custom-checkbox {
+  border-color: var(--accent);
+  background: rgba(232, 102, 61, 0.08);
+  box-shadow:
+    0 0 0 5px rgba(232, 102, 61, 0.20),
+    0 0 20px rgba(232, 102, 61, 0.20);
 }
 
 /* --- Phase 2: Hidden Radios for Option Cards --- */
