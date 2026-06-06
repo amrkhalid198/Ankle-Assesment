@@ -34,7 +34,7 @@ const I18n = {
     'sport.subtitle': 'اختار الرياضة اللي بتلعبها كـ Main sport.',
     'sport.opt1.label': 'كرة القدم',
     'sport.opt2.label': 'كرة السلة',
-    'sport.opt3.label': 'فولي / هاند بول',
+    'sport.opt3.label': 'كرة الطائرة / كرة اليد',
     'sport.opt4.label': 'تنس / بادل',
     'sport.opt5.label': 'أخرى',
 
@@ -47,7 +47,7 @@ const I18n = {
     'q1.title': 'جالك Ankle Sprain كام مرة؟',
     'q1.subtitle': 'احسب أي مرة حصل فيها التواء أو حسيت إن المفصل فلت منك (Giving way).',
     'q1.opt1.label': 'ولا مرة',
-    'q1.opt1.desc': 'مفيش History لأي التواء',
+    'q1.opt1.desc': 'مفيش تاريخ لأي التواء',
     'q1.opt2.label': 'مرة واحدة',
     'q1.opt2.desc': 'حصلت مرة واحدة بس',
     'q1.opt3.label': '٢–٣ مرات',
@@ -68,12 +68,12 @@ const I18n = {
     'q2.opt4.desc': 'حديثة — لسه في مرحلة الـتعافي',
 
     // Q3 — Giving Way
-    'q3.title': 'كل قد إيه بتحس بـ Giving way أو إن الـ Ankle هيخونك؟',
+    'q3.title': 'كل قد إيه بتحس إن الكاحل بيخونك أو بيديّك إحساس إنه هيقع؟',
     'q3.subtitle': 'وقت التمرين، المشي على أرض مش مستوية، أو في العادي.',
     'q3.opt1.label': 'أبداً',
-    'q3.opt1.desc': 'Stable تماماً مفيش أي مشكلة',
+    'q3.opt1.desc': 'ثابت تماما مفيش اي مشكلة',
     'q3.opt2.label': 'نادر جداً',
-    'q3.opt2.desc': 'بس في المواقف الصعبة أو وقت الـ High Fatigue',
+    'q3.opt2.desc': 'بس في المواقف الصعبة أو وقت الإجهاد العالي',
     'q3.opt3.label': 'أحياناً',
     'q3.opt3.desc': 'وقت التمرين أو لو الأرض مش مستوية',
     'q3.opt4.label': 'كتير',
@@ -82,14 +82,14 @@ const I18n = {
     // ==========================================
     // Phase 1 — Psychological Confidence
     // ==========================================
-    'confidence.label': 'Phase 1 — Psychological Confidence',
-    'confidence.q1.title': 'عندك ثقة قد إيه في الـ Ankle وقت الـ Cutting، الـ Jumping، أو الـ Landing؟',
-    'confidence.q1.subtitle': 'فكر في الحركات المفاجئة والـ High-intensity في رياضتك.',
+    'confidence.label': 'المرحلة الأولى — الثقة في الحركة',
+    'confidence.q1.title': 'مدى ثقتك في الكاحل أثناء تغيير الاتجاه، القفز، أو الهبوط؟',
+    'confidence.q1.subtitle': 'فكر في الحركات المفاجئة والشدة العالية في رياضتك.',
     'confidence.slider.low': 'مفيش ثقة',
     'confidence.slider.high': 'ثقة ١٠٠٪',
     
-    'confidence.q2.title': 'خوفك من الـ Re-injury مأثر على أدائك قد إيه؟',
-    'confidence.q2.subtitle': 'هل القلق على الـ Ankle بيخليك Hold back وقت التمرين أو الماتشات؟',
+    'confidence.q2.title': 'خوفك من تكرار الإصابة مأثر على أدائك قد إيه؟',
+    'confidence.q2.subtitle': 'هل خوفك على الكاحل بيخليك تتراجع أو تقلل أداءك في التمرين أو الماتش؟',
     'confidence.fear.low': 'موقفني دايماً',
     'confidence.fear.high': 'مفيش خوف خالص',
     'confidence.next': 'متابعة',
@@ -121,39 +121,39 @@ const I18n = {
     // ==========================================
     // Phase 2 — Transition
     // ==========================================
-    'phase2.transition.label': 'Phase 2',
-    'phase2.transition.title': 'Physical Stress Tests',
-    'phase2.transition.desc': 'دلوقتي هنختبر الـ Functional Capacity الحقيقية للـ Ankle. هتعمل ٣ اختبارات سريعة عشان نقيم الـ Balance، الـ Endurance، والـ Power.',
+    'phase2.transition.label': 'المرحلة 2',
+    'phase2.transition.title': 'اختبارات التحمل البدني',
+    'phase2.transition.desc': 'دلوقتي هنختبر القدرة الوظيفية الحقيقية للكاحل. هتعمل 3 اختبارات سريعة عشان نقيم التوازن، التحمل، والقوة الانفجارية.',
     'phase2.transition.start': 'ابدأ الاختبارات',
 
     // ==========================================
     // Balance Test
     // ==========================================
-    'balance.label': 'Phase 2 — Balance Control',
+    'balance.label': 'المرحلة الثانية — التحكم في التوازن',
     'balance.title': 'Single-Leg Balance (عيون مقفولة)',
     'balance.purpose': 'عشان نقيم الـ Proprioception والتحكم العصبي العضلي.',
     'balance.instructions.title': 'التعليمات',
     'balance.step1': 'اقف على رجلك المصابة',
     'balance.step2': 'ارفع رجلك التانية من على الأرض',
-    'balance.step3': 'غمض عينك وسيب دراعك Relaxed',
-    'balance.step4': 'حاول تثبت لأطول فترة ممكنة (الماكسيموم ٣٠ ثانية)',
-    'balance.step5': 'دوس "فقدت توازني" أول ما تفقد الـ Balance',
+    'balance.step3': 'غمّض عينك وخلي دراعك مرتاح.',
+    'balance.step4': 'حاول تثبت لأطول فترة ممكنة (أعلى مدة ٣٠ ثانية)',
+    'balance.step5': 'اضغط "فقدت توازني" أول ما تحس إنك فقدت التوازن.',
     'balance.timer.unit': 'ثانية',
-    'balance.start': 'ابدأ الـ Timer',
+    'balance.start': 'ابدأ المؤقت',
     'balance.stop': 'فقدت توازني',
 
     // ==========================================
     // Calf Raise Test
     // ==========================================
-    'calf.label': 'Phase 2 — Calf Endurance',
+    'calf.label': 'المرحلة الثانية — تحمل عضلة السمانة',
     'calf.title': 'Single-Leg Calf Raise Endurance',
-    'calf.purpose': 'قياس قوة تحمل السمانة (Plantar flexors) وقدرتها على امتصاص الـ Force.',
+    'calf.purpose': 'قياس قوة تحمل السمانة (Plantar flexors) وقدرتها على امتصاص القوة.',
     'calf.instructions.title': 'التعليمات',
-    'calf.step1': 'اقف على رجلك المصابة جنب حيطة عشان تسند خفيف للـ Balance بس',
+    'calf.step1': 'اقف على رجلك المصابة جنب حيطة عشان تسند للتوازن بس',
     'calf.step2': 'اطلع على مشط رجلك لأقصى ارتفاع تقدر عليه',
-    'calf.step3': 'انزل تاني بـ Control',
+    'calf.step3': 'انزل تاني بتحكم',
     'calf.step4': 'دوس على الزرار تحت بعد كل عدة (Rep) كاملة',
-    'calf.step5': 'وقف أول ما تحس إنك مش قادر تجيب الـ Full Range',
+    'calf.step5': 'وقف أول ما تحس إنك مش قادر تجيب المدى الحركي كامل',
     'calf.counter.label': 'Reps Completed',
     'calf.tapBtn': 'دوس هنا لكل عدة',
     'calf.doneBtn': 'خلصت — مش قادر أكمل',
@@ -161,30 +161,30 @@ const I18n = {
     // ==========================================
     // Side Hop Test
     // ==========================================
-    'sidehop.label': 'Phase 2 — Power & Explosiveness',
+    'sidehop.label': 'المرحلة الثانية — القدرة الانفجارية',
     'sidehop.title': 'Side Hop Test',
-    'sidehop.purpose': 'تقييم الـ Explosive Power، الـ Dynamic Control، والـ Stability وقت الحركات المتكررة.',
+    'sidehop.purpose': 'تقييم القوة الانفجارية، التحكم الحركي، والثبات أثناء الحركات المتكررة.',
     'sidehop.instructions.title': 'التعليمات',
     'sidehop.step1': 'حط لزق أو حدد خط على الأرض بعرض ٣٠ سم تقريباً',
     'sidehop.step2': 'اقف على رجلك المصابة جنب الخط',
     'sidehop.step3': 'نط للجنب يمين ويسار فوق الخط بأسرع ما يمكن',
-    'sidehop.step4': 'كمل لمدة ٣٠ ثانية وحافظ على الـ Control والـ Balance',
-    'sidehop.step5': 'ركز إن الـ Landing بتاعك يكون خفيف وStable في كل نطة',
+    'sidehop.step4': 'كمل لمدة ٣٠ ثانية وحافظ على التوازن والتحكم',
+    'sidehop.step5': 'ركز إن الهبوط يكون خفيف وثابت في كل قفزة.',
     'sidehop.step6': 'قيم أدائك في الاختبار بصدق تحت',
     
     'sidehop.opt1.label': 'خلصته بسلاسة تامة',
-    'sidehop.opt1.desc': '٣٠ ثانية كاملين بـ Control وإيقاع ثابت من غير وجع أو تردد.',
+    'sidehop.opt1.desc': '٣٠ ثانية كاملين بتحكم وإيقاع ثابت من غير وجع أو تردد.',
     'sidehop.opt2.label': 'خلصته مع انزعاج بسيط',
-    'sidehop.opt2.desc': 'كملت الـ ٣٠ ثانية بس حسيت بـ Mild Instability أو وجع خفيف في الآخر.',
-    'sidehop.opt3.label': 'خلصته بالعافية',
-    'sidehop.opt3.desc': 'اضطريت أبطأ جداً أو أقف في النص بسبب الـ Instability أو الوجع.',
+    'sidehop.opt2.desc': 'كملت الـ ٣٠ ثانية بس حسيت بعدم ثبات بسيط أو وجع خفيف في الآخر.',
+    'sidehop.opt3.label': 'خلصته بصعوبة',
+    'sidehop.opt3.desc': 'اضطريت أبطأ جداً أو أقف في النص بسبب عدم الثبات أو الوجع.',
     'sidehop.opt4.label': 'مقدرتش أكمله',
     'sidehop.opt4.desc': 'وقفت بدري بسبب الوجع، الخوف، أو إني فقدت التوازن خالص.',
 
     // ==========================================
     // Calculating
     // ==========================================
-    'calculating.text': 'بنحلل الـ Results بتاعتك…',
+    'calculating.text': 'بنحلل النتائج بتاعتك…',
 
     // ==========================================
     // Results
@@ -192,10 +192,10 @@ const I18n = {
     'results.header': 'نتائج التقييم',
     'results.scoreTotal': '/ 100',
     'results.acuteWarning.title': 'تنبيه مهم',
-    'results.acuteWarning.text': 'بناءً على إجاباتك، ممكن تكون إصابتك لسه في الـ Acute Phase. بننصحك تراجع دكتور أو أخصائي تأهيل قبل ما تبدأ أي Rehab Protocol.',
+    'results.acuteWarning.text': 'بناءً على إجاباتك، قد تكون الإصابة ما زالت في المرحلة الحادة. يُفضّل مراجعة مختص قبل بدء التأهيل.',
     'results.insights.title': 'ماذا يعني هذا',
-    'results.actionSteps.title': 'الـ Next Steps',
-    'results.cta.title': 'جاهز تبدأ الـ System الكامل؟',
+    'results.actionSteps.title': 'الخطوات القادمة',
+    'results.cta.title': 'جاهز تبدأ النظام الكامل؟',
     'results.cta.button': 'احصل على الـ System ←',
     'results.retake': 'إعادة التقييم (Retake)',
 
@@ -211,7 +211,7 @@ const I18n = {
     // Email Gateway
     // ==========================================
     'emailGate.title': 'النتيجة بتاعتك جاهزة!',
-    'emailGate.desc': 'اكتب الـ Email بتاعك عشان تشوف الـ Report المفصل لحالتك.',
+    'emailGate.desc': 'اكتب الـ Email بتاعك عشان تشوف التقرير المفصل لحالتك.',
     'emailGate.placeholder': 'البريد الإلكتروني',
     'emailGate.submit': 'عرض النتيجة',
     'emailGate.error': 'أدخل إيميل صحيح من فضلك',
