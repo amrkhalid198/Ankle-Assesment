@@ -93,6 +93,8 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   overflow-x: hidden;
+  /* Arabic is a connected script — letter-spacing breaks glyph joins */
+  letter-spacing: 0;
 }
 
 /* Subtle ambient noise texture */
@@ -236,7 +238,7 @@ body::before {
   font-family: var(--font-heading);
   font-size: clamp(26px, 5.5vw, 40px); font-weight: 800;
   line-height: 1.15; margin-bottom: var(--sp-md);
-  letter-spacing: -0.5px;
+  letter-spacing: 0; /* Arabic connected script */
 }
 .welcome-title em {
   font-style: normal;
@@ -314,13 +316,14 @@ body::before {
 }
 
 /* ============================================
-   Structured Disclaimer — Gateway Screen 2
+   Structured Disclaimer — Gateway Screen
    ============================================ */
 .disclaimer-lead-text {
   font-size: 15px;
   color: var(--text-primary);
-  line-height: 1.8;
+  line-height: 1.85;
   margin-bottom: var(--sp-md);
+  text-align: right;
 }
 .disclaimer-lead-text strong {
   color: var(--text-primary);
@@ -329,9 +332,10 @@ body::before {
 .disclaimer-prohibition-text {
   font-size: 14px;
   color: var(--color-warning);
-  line-height: 1.7;
+  line-height: 1.75;
   margin-bottom: var(--sp-md);
   font-weight: 500;
+  text-align: right;
 }
 
 /* Contraindications List */
@@ -343,16 +347,18 @@ body::before {
 .contraindications-list li {
   position: relative;
   padding: var(--sp-sm) 0;
-  padding-right: var(--sp-xl);
+  padding-right: var(--sp-xl); /* space for the bullet dot on the right */
   font-size: 14px;
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: 1.75;
+  text-align: right; /* Arabic default — right aligned */
 }
 .contraindications-list li::before {
   content: '';
   position: absolute;
   right: 0;
-  top: 14px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 6px;
   height: 6px;
   background: var(--accent);
@@ -362,10 +368,12 @@ body::before {
 [dir="ltr"] .contraindications-list li {
   padding-right: 0;
   padding-left: var(--sp-xl);
+  text-align: left;
 }
 [dir="ltr"] .contraindications-list li::before {
   right: auto;
   left: 0;
+  transform: translateY(-50%);
 }
 
 /* Consent Divider */
@@ -567,16 +575,20 @@ body::before {
    ============================================ */
 .phase-label {
   font-size: 11px; text-transform: uppercase;
-  letter-spacing: 0; color: var(--accent);
+  letter-spacing: 0.5px; color: var(--accent);
   font-weight: 700; margin-bottom: var(--sp-xl);
   display: flex; align-items: center; gap: var(--sp-sm);
   font-family: var(--font-body);
-  direction: ltr; /* always LTR so the dash renders on the left */
+  /* RTL: dash appears on the right, text reads right-to-left */
+  direction: rtl;
+  justify-content: flex-start;
+  text-align: right;
 }
 .phase-label::before {
   content: ''; width: 14px; height: 1.5px;
   background: var(--accent); border-radius: 1px;
   flex-shrink: 0;
+  /* In RTL flex, ::before is the first visual child — appears on the right */
 }
 
 /* ============================================
@@ -586,7 +598,7 @@ body::before {
   font-family: var(--font-heading);
   font-size: clamp(20px, 4.5vw, 26px); font-weight: 700;
   line-height: 1.35; margin-bottom: var(--sp-sm);
-  letter-spacing: -0.3px;
+  letter-spacing: 0; /* Arabic connected script — no spacing */
 }
 .question-subtext {
   font-size: 14px; color: var(--text-secondary);
@@ -1445,11 +1457,7 @@ input[type="range"]::-moz-range-thumb {
 [dir="rtl"] .stop-screen p,
 [dir="rtl"] .go-screen p { text-align: right; }
 
-/* Phase label — always renders LTR (dash on left) regardless of doc direction */
-[dir="rtl"] .phase-label {
-  justify-content: flex-start;
-  text-align: left;
-}
+/* Phase label — RTL handled in base rule (direction: rtl, dash on right) */
 
 /* Option cards — flex direction for RTL */
 [dir="rtl"] .option-card { flex-direction: row-reverse; }
@@ -1635,3 +1643,48 @@ input[type="range"]::-moz-range-thumb {
    Welcome Badge — centered in brand header
    ============================================ */
 .brand-header .welcome-badge { text-align: center; }
+
+/* ============================================
+   Arabic Letter-Spacing Global Reset
+   Arabic is a connected cursive script. Any positive letter-spacing
+   breaks the ligatures between letters, creating the "spaces between
+   letters" bug visible on mobile. This block zeroes it out on every
+   element that contains Arabic body text.
+   ============================================ */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] li,
+[dir="rtl"] label,
+[dir="rtl"] button,
+[dir="rtl"] .option-label,
+[dir="rtl"] .option-desc,
+[dir="rtl"] .phase-label,
+[dir="rtl"] .question-text,
+[dir="rtl"] .question-subtext,
+[dir="rtl"] .slider-question-text,
+[dir="rtl"] .slider-subtext,
+[dir="rtl"] .test-purpose,
+[dir="rtl"] .checkbox-text,
+[dir="rtl"] .disclaimer-lead-text,
+[dir="rtl"] .disclaimer-prohibition-text,
+[dir="rtl"] .contraindications-list li,
+[dir="rtl"] .triage-q-title,
+[dir="rtl"] .action-step h4,
+[dir="rtl"] .action-step p,
+[dir="rtl"] .insights-text,
+[dir="rtl"] .category-bar-label,
+[dir="rtl"] .welcome-time,
+[dir="rtl"] .welcome-subtitle,
+[dir="rtl"] .educational-disclaimer,
+[dir="rtl"] .email-gate-title,
+[dir="rtl"] .email-gate-desc,
+[dir="rtl"] .cta-card h3,
+[dir="rtl"] .cta-card p,
+[dir="rtl"] .acute-warning p,
+[dir="rtl"] .slider-value-label {
+  letter-spacing: 0 !important;
+}
