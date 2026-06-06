@@ -561,7 +561,48 @@
     renderCategoryBars(categories);
 
     // ── Insights ──
-    const insightsContent = ScoringEngine.getInsights(tier, categories);
+    // Primary: delegate to ScoringEngine. Fallback: build directly from I18n
+    // so the diagnosis section always renders even if scoring.js has a gap.
+    var insightsContent = '';
+    try {
+      insightsContent = ScoringEngine.getInsights(tier, categories) || '';
+    } catch (e) {
+      insightsContent = '';
+    }
+
+    if (!insightsContent || !insightsContent.trim()) {
+      // Build insight directly from i18n keys using tier.id
+      var tierId = (tier && tier.id) ? tier.id : 'moderate';
+      var baseInsight = (typeof I18n !== 'undefined' && I18n.t)
+        ? I18n.t('insight.' + tierId)
+        : '';
+
+      // Append weakest-category sentence with placeholder replacement
+      var weakestInsight = '';
+      if (typeof I18n !== 'undefined' && I18n.t && categories) {
+        var minPct = 101;
+        var minKey = '';
+        var minLabel = '';
+        var catKeys = ['history', 'confidence', 'balance', 'endurance', 'power'];
+        catKeys.forEach(function(k) {
+          if (categories[k] && categories[k].percentage < minPct) {
+            minPct  = categories[k].percentage;
+            minKey  = k;
+            minLabel = categories[k].label || I18n.t('cat.' + k);
+          }
+        });
+        if (minKey) {
+          weakestInsight = I18n.t('insight.weakest')
+            .replace('{label}', minLabel)
+            .replace('{pct}', Math.round(minPct));
+        }
+      }
+
+      insightsContent = [baseInsight, weakestInsight]
+        .filter(Boolean)
+        .join(' ');
+    }
+
     $('insightsText').innerHTML = insightsContent
       ? insightsContent.replace(/\n/g, '<br>')
       : 'لا توجد بيانات متاحة حالياً.';
