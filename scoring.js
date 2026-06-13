@@ -6,22 +6,22 @@
 //
 // ── SCORING BREAKDOWN (Total: 100) ──────────
 //
-//  Category      | Source                  | Max
-// ───────────────|─────────────────────────|─────
-//  History       | sprain_count (10)       |  30
-//                | last_sprain  (10)       |
-//                | giving_way   (10)       |
-// ───────────────|─────────────────────────|─────
-//  Confidence    | movement_confidence(10) |  20
-//                | fear_reinjury      (10) |
-// ───────────────|─────────────────────────|─────
-//  Balance       | balance_hold (timer 30s)|  20
-// ───────────────|─────────────────────────|─────
-//  Endurance     | calf_raises  (counter)  |  15
-// ───────────────|─────────────────────────|─────
-//  Power         | sidehop_result (option) |  15
-// ───────────────|─────────────────────────|─────
-//                                     TOTAL: 100
+//  Category      | Source                        | Max
+// ───────────────|───────────────────────────────|─────
+//  History       | sprain_count         (10)     |  30
+//                | giving_way           (10)     |
+//                | post_session_symptoms(10)     |
+// ───────────────|───────────────────────────────|─────
+//  Confidence    | movement_confidence  (10)     |  20
+//                | fear_reinjury        (10)     |
+// ───────────────|───────────────────────────────|─────
+//  Balance       | balance_hold (timer 30s)      |  20
+// ───────────────|───────────────────────────────|─────
+//  Endurance     | calf_raises  (counter)        |  15
+// ───────────────|───────────────────────────────|─────
+//  Power         | sidehop_result (option)       |  15
+// ───────────────|───────────────────────────────|─────
+//                                          TOTAL: 100
 //
 // ── TIER RANGES ─────────────────────────────
 //  Severe:   0–30  |  Moderate: 31–55
@@ -111,26 +111,29 @@ const ScoringEngine = {
   // Main calculation entry point
   // ------------------------------------------
   calculate(answers) {
-    const historyScore     = (answers.sprain_count || 0) +
-                             (answers.last_sprain  || 0) +
-                             (answers.giving_way   || 0);
+    // History: 3 questions × max 10 each = 30 total
+    const historyScore     = (answers.sprain_count          || 0) +
+                             (answers.giving_way             || 0) +
+                             (answers.post_session_symptoms  || 0);
+
     const confidenceScore  = (answers.movement_confidence || 0) +
                              (answers.fear_reinjury       || 0);
     const balanceScore     = this.scorePhysicalTest('balance_hold', answers.balance_hold_raw || 0);
     const enduranceScore   = this.scorePhysicalTest('calf_raises',  answers.calf_raises_raw || 0);
-    const powerScore = answers.sidehop_result || 0;
+    const powerScore       = answers.sidehop_result || 0;
 
     const total = historyScore + confidenceScore + balanceScore +
                   enduranceScore + powerScore;
 
-    const pct = (score, max) => Math.round((score / max) * 100);
+    // pct(score, max) → integer percentage clamped to 0–100
+    const pct = (score, max) => Math.min(100, Math.round((score / max) * 100));
 
     const categories = {
-      history:      { score: historyScore,      max: 30, percentage: pct(historyScore, 30),      label: I18n.t('cat.history') },
-      confidence:   { score: confidenceScore,   max: 20, percentage: pct(confidenceScore, 20),   label: I18n.t('cat.confidence') },
-      balance:      { score: balanceScore,      max: 20, percentage: pct(balanceScore, 20),      label: I18n.t('cat.balance') },
-      endurance:    { score: enduranceScore,    max: 15, percentage: pct(enduranceScore, 15),    label: I18n.t('cat.endurance') },
-      power:        { score: powerScore,        max: 15, percentage: pct(powerScore, 15),        label: I18n.t('cat.power') }
+      history:    { score: historyScore,    max: 30, percentage: pct(historyScore, 30),    label: I18n.t('cat.history') },
+      confidence: { score: confidenceScore, max: 20, percentage: pct(confidenceScore, 20), label: I18n.t('cat.confidence') },
+      balance:    { score: balanceScore,    max: 20, percentage: pct(balanceScore, 20),    label: I18n.t('cat.balance') },
+      endurance:  { score: enduranceScore,  max: 15, percentage: pct(enduranceScore, 15),  label: I18n.t('cat.endurance') },
+      power:      { score: powerScore,      max: 15, percentage: pct(powerScore, 15),      label: I18n.t('cat.power') }
     };
 
     return {
@@ -204,7 +207,28 @@ const ScoringEngine = {
   },
 
   // ------------------------------------------
-  // Section 4: CTA copy per tier
+  // Section 4: Actionable Steps per tier
+  // ------------------------------------------
+  getActionableSteps(tier) {
+    var tierId = tier.id;
+    return [
+      {
+        title:       I18n.t('action.' + tierId + '.1.title'),
+        description: I18n.t('action.' + tierId + '.1.desc')
+      },
+      {
+        title:       I18n.t('action.' + tierId + '.2.title'),
+        description: I18n.t('action.' + tierId + '.2.desc')
+      },
+      {
+        title:       I18n.t('action.' + tierId + '.3.title'),
+        description: I18n.t('action.' + tierId + '.3.desc')
+      }
+    ];
+  },
+
+  // ------------------------------------------
+  // Section 5: CTA copy per tier
   // ------------------------------------------
   getCTAText(tier) {
     return I18n.t('cta.' + tier.id);
