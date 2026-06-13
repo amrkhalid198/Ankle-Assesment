@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 </head>
 <body>
 
@@ -125,6 +125,7 @@
       <!-- ========================================== -->
 
 
+      <!-- Step 1: Sport Selection -->
       <div class="screen" id="screen-sport" data-step="1">
         <div class="screen-content">
           <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
@@ -171,6 +172,7 @@
         </div>
       </div>
 
+      <!-- Step 2: Sprain Count -->
       <div class="screen" id="screen-q1" data-step="2">
         <div class="screen-content">
           <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
@@ -214,6 +216,7 @@
         </div>
       </div>
 
+      <!-- Step 3: Giving Way -->
       <div class="screen" id="screen-q3" data-step="3">
         <div class="screen-content">
           <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
@@ -257,7 +260,52 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-confidence" data-step="4">
+      <!-- Step 4: Post-Session Symptoms (NEW) -->
+      <div class="screen" id="screen-q4" data-step="4">
+        <div class="screen-content">
+          <div class="phase-label" data-i18n="phase1.label">المرحلة ١ — تاريخ عدم الثبات</div>
+          <h2 class="question-text" data-i18n="q3_new.title">بتحس بأي ورم، وجع، أو تيبس بعد التمرين؟</h2>
+          <p class="question-subtext" data-i18n="q3_new.subtitle">قيّم حالة الكاحل بعد أي مجهود أو تمرينة تقيلة.</p>
+
+          <div class="option-cards" data-question="post_session_symptoms">
+            <button class="option-card" data-score="10">
+              <div class="option-icon"><svg viewBox="0 0 20 20"><path d="M10 2 L10 2 C14 2 17 5 17 9 L17 12 C17 14 15 16 13 17 L10 18 L7 17 C5 16 3 14 3 12 L3 9 C3 5 6 2 10 2Z" /></svg></div>
+              <div class="option-info">
+                <div class="option-label" data-i18n="q3_new.opt1.label">مفيش خالص</div>
+                <div class="option-desc" data-i18n="q3_new.opt1.desc">طبيعي جداً ومفيش أي مشكلة بعد التمرين</div>
+              </div>
+              <div class="option-check"></div>
+            </button>
+            <button class="option-card" data-score="7">
+              <div class="option-icon"><svg viewBox="0 0 20 20"><rect x="3" y="10" width="3" height="7" rx="1" /><rect x="8.5" y="6" width="3" height="11" rx="1" /><rect x="14" y="3" width="3" height="14" rx="1" /></svg></div>
+              <div class="option-info">
+                <div class="option-label" data-i18n="q3_new.opt2.label">حاجة بسيطة</div>
+                <div class="option-desc" data-i18n="q3_new.opt2.desc">تيبس خفيف تاني يوم الصبح بس بيفك بسرعة</div>
+              </div>
+              <div class="option-check"></div>
+            </button>
+            <button class="option-card" data-score="4">
+              <div class="option-icon"><svg viewBox="0 0 20 20"><path d="M10 2 L18 17 H2 Z" /><line x1="10" y1="8" x2="10" y2="12" /><circle cx="10" cy="14.5" r="0.5" fill="currentColor" /></svg></div>
+              <div class="option-info">
+                <div class="option-label" data-i18n="q3_new.opt3.label">متوسط ومزعج</div>
+                <div class="option-desc" data-i18n="q3_new.opt3.desc">ورم أو وجع ملحوظ بياخد يوم بحاله عشان يروح</div>
+              </div>
+              <div class="option-check"></div>
+            </button>
+            <button class="option-card" data-score="1">
+              <div class="option-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" /><line x1="10" y1="6" x2="10" y2="11" /><circle cx="10" cy="13.5" r="0.7" fill="currentColor" /></svg></div>
+              <div class="option-info">
+                <div class="option-label" data-i18n="q3_new.opt4.label">شديد ومستمر</div>
+                <div class="option-desc" data-i18n="q3_new.opt4.desc">ورم مستمر بيمنعني أنزل التمرينة اللي بعدها</div>
+              </div>
+              <div class="option-check"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Confidence Sliders -->
+      <div class="screen" id="screen-confidence" data-step="5">
         <div class="screen-content">
           <div class="phase-label" data-i18n="confidence.label">المرحلة ١ — الثقة النفسية</div>
 
@@ -299,7 +347,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-phase2" data-step="5">
+      <!-- Step 6: Phase 2 Transition -->
+      <div class="screen" id="screen-phase2" data-step="6">
         <div class="screen-content">
           <div class="phase-transition">
             <div class="phase-transition-icon"><svg viewBox="0 0 20 20"><polyline points="2,14 5,8 8,12 11,4 14,10 17,6" /><line x1="2" y1="16" x2="18" y2="16" /></svg></div>
@@ -311,7 +360,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-balance" data-step="6">
+      <!-- Step 7: Balance Test -->
+      <div class="screen" id="screen-balance" data-step="7">
         <div class="screen-content">
           <div class="phase-label" data-i18n="balance.label">المرحلة ٢ — التحكم بالتوازن</div>
           <h2 class="question-text" data-i18n="balance.title">اختبار التوازن على رجل واحدة بعينين مغلقتين</h2>
@@ -348,7 +398,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-calfraise" data-step="7">
+      <!-- Step 8: Calf Raise Test -->
+      <div class="screen" id="screen-calfraise" data-step="8">
         <div class="screen-content">
           <div class="phase-label" data-i18n="calf.label">المرحلة ٢ — تحمل عضلة الساق</div>
           <h2 class="question-text" data-i18n="calf.title">اختبار تحمل رفع الكعب على رجل واحدة</h2>
@@ -375,7 +426,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-sidehop" data-step="8">
+      <!-- Step 9: Side Hop Test -->
+      <div class="screen" id="screen-sidehop" data-step="9">
         <div class="screen-content">
           <div class="phase-label" data-i18n="sidehop.label">المرحلة ٢ — القوة والانفجارية</div>
           <h2 class="question-text" data-i18n="sidehop.title">اختبار القفز الجانبي</h2>
@@ -430,7 +482,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-email-gate" data-step="9">
+      <!-- Step 10: Email Gate -->
+      <div class="screen" id="screen-email-gate" data-step="10">
         <div class="screen-content">
           <div class="email-gate">
             <div class="email-gate-icon"><svg viewBox="0 0 20 20"><rect x="3" y="10" width="3" height="7" rx="1" /><rect x="8.5" y="6" width="3" height="11" rx="1" /><rect x="14" y="3" width="3" height="14" rx="1" /></svg></div>
@@ -445,7 +498,8 @@
         </div>
       </div>
 
-      <div class="screen" id="screen-results" data-step="10">
+      <!-- Step 11: Results -->
+      <div class="screen" id="screen-results" data-step="11">
         <div class="screen-content">
 
           <div class="results-header">
@@ -496,8 +550,6 @@
             <div id="actionStepsList"></div>
           </div>
 
-
-
           <div class="cta-section">
             <div class="cta-card">
               <div class="cta-badge">ANKLE PROTOCOL</div>
@@ -536,7 +588,6 @@
   <script src="timer.js"></script>
   <script src="charts.js"></script>
   <script src="app.js"></script>
-
 
 </body>
 </html>
