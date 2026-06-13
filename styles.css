@@ -171,8 +171,9 @@ body::before {
    ============================================ */
 .screens-container {
   position: relative;
-  overflow: hidden;
-  /* Grid children need min-height:0 to prevent height overflow */
+  /* overflow:hidden clips the canvas chart — use clip instead so
+     slide transitions are masked but the active screen scrolls freely */
+  overflow: clip;
   min-height: 0;
   align-self: stretch;
 }
@@ -189,10 +190,16 @@ body::before {
 .screen::-webkit-scrollbar { width: 0; background: transparent; }
 .screen.active {
   opacity: 1; transform: translateX(0);
-  pointer-events: all; position: relative;
+  pointer-events: all;
+  /* Switch to relative so the screen grows to fit its content
+     instead of being pinned to the container's fixed inset:0 height */
+  position: relative;
+  /* Ensure the active screen is never shorter than the viewport */
+  min-height: calc(100dvh - 80px);
 }
 .screen.exit-left {
-  opacity: 0; transform: translateX(-40px);
+  opacity: 0; transform: translateX(40px);
+  position: absolute; inset: 0;
 }
 .screen-content {
   width: 100%;
@@ -1131,7 +1138,13 @@ input[type="range"]::-moz-range-thumb {
   margin: var(--sp-xl) 0; display: flex; justify-content: center;
 }
 .chart-container canvas {
-  width: 100%; max-width: 360px; height: auto; aspect-ratio: 1;
+  width: 100%;
+  max-width: 360px;
+  /* Explicit height prevents the "phantom tall block" on mobile where
+     aspect-ratio:1 can resolve before the canvas JS sets pixel dimensions */
+  height: 360px;
+  max-height: 360px;
+  display: block;
 }
 
 /* Insights */
