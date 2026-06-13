@@ -55,7 +55,7 @@ const I18n = {
     'q1.opt4.label': '٤ مرات أو أكتر',
     'q1.opt4.desc': 'إصابات متكررة (Recurrent)',
 
-    // Q2 — Last Sprain
+    // Q2 — Last Sprain (kept for reference; screen removed from flow)
     'q2.title': 'آخر مرة حصلك التواء في الكاحل أو حسيت إن الكاحل فلت منك كانت إمتى؟',
     'q2.subtitle': 'افتكر آخر مرة حسيت فيها بعدم ثبات.',
     'q2.opt1.label': 'من أكتر من سنة',
@@ -78,6 +78,18 @@ const I18n = {
     'q3.opt3.desc': 'وقت التمرين أو لو الأرض مش مستوية',
     'q3.opt4.label': 'كتير',
     'q3.opt4.desc': 'حتى في المشي العادي والأنشطة اليومية',
+
+    // Q3_NEW — Post-Session Symptoms
+    'q3_new.title': 'بتحس بأي ورم، وجع، أو تيبس بعد التمرين؟',
+    'q3_new.subtitle': 'قيّم حالة الكاحل بعد أي مجهود أو تمرينة تقيلة.',
+    'q3_new.opt1.label': 'مفيش خالص',
+    'q3_new.opt1.desc': 'طبيعي جداً ومفيش أي مشكلة بعد التمرين',
+    'q3_new.opt2.label': 'حاجة بسيطة',
+    'q3_new.opt2.desc': 'تيبس خفيف تاني يوم الصبح بس بيفك بسرعة',
+    'q3_new.opt3.label': 'متوسط ومزعج',
+    'q3_new.opt3.desc': 'ورم أو وجع ملحوظ بياخد يوم بحاله عشان يروح',
+    'q3_new.opt4.label': 'شديد ومستمر',
+    'q3_new.opt4.desc': 'ورم مستمر بيمنعني أنزل التمرينة اللي بعدها',
 
     // ==========================================
     // Phase 1 — Psychological Confidence
