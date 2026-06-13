@@ -25,20 +25,21 @@
     'screen-welcome',      // 0
     'screen-sport',        // 1  (Legal gateway drops users here)
     'screen-q1',           // 2  sprain_count
-    'screen-q3',           // 3  giving_way  (last_sprain screen removed)
-    'screen-confidence',   // 4
-    'screen-phase2',       // 5
-    'screen-balance',      // 6
-    'screen-calfraise',    // 7
-    'screen-sidehop',      // 8
-    'screen-email-gate',   // 9
-    'screen-results'       // 10
+    'screen-q3',           // 3  giving_way
+    'screen-q4',           // 4  post_session_symptoms  ← NEW
+    'screen-confidence',   // 5
+    'screen-phase2',       // 6
+    'screen-balance',      // 7
+    'screen-calfraise',    // 8
+    'screen-sidehop',      // 9
+    'screen-email-gate',   // 10
+    'screen-results'       // 11
   ];
 
-  const PHASE_1_END   = 4;   // confidence is last Phase-1 screen
-  const PHASE_2_END   = 8;   // sidehop is last Phase-2 screen
-  const EMAIL_GATE    = 9;
-  const RESULTS_STEP  = 10;
+  const PHASE_1_END   = 5;   // confidence is last Phase-1 screen
+  const PHASE_2_END   = 9;   // sidehop is last Phase-2 screen
+  const EMAIL_GATE    = 10;
+  const RESULTS_STEP  = 11;
 
   // ============================================
   // Helpers
@@ -83,8 +84,8 @@
 
   // Reset a physical test screen to its initial state so it can be retaken
   function resetTestScreen(step) {
-    const BALANCE_STEP   = 6;
-    const CALFRAISE_STEP = 7;
+    const BALANCE_STEP   = 7;   // updated: was 6
+    const CALFRAISE_STEP = 8;   // updated: was 7
 
     if (step === BALANCE_STEP) {
       // Stop any running timer first
@@ -367,9 +368,9 @@
     if (bstop) bstop.style.display = 'none';
     var tv = $('timerValue');
     if (tv) tv.textContent = Math.floor(elapsed) + 's';
-    // Only auto-advance if the user is still on the balance screen
+    // Only auto-advance if the user is still on the balance screen (now step 7)
     setTimeout(function() {
-      if (state.currentStep === 6) nextStep();
+      if (state.currentStep === 7) nextStep();
     }, 800);
   }
 
