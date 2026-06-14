@@ -166,20 +166,48 @@ const ScoringEngine = {
 
   // ------------------------------------------
   // Acute-injury safety gate
-  // Flags users whose answers suggest the injury may still be in an
-  // acute phase: frequent instability (giving_way) or severe/persistent
-  // post-session swelling (post_session_symptoms — mirrors the
-  // "active swelling" contraindication on the legal disclaimer),
-  // combined with very low movement confidence.
   // ------------------------------------------
   checkAcuteInjury(answers) {
-    const highInstability = (answers.giving_way <= 1) || (answers.post_session_symptoms <= 1);
-    const lowConfidence   = answers.movement_confidence <= 3;
-    return highInstability && lowConfidence;
+    return answers.last_sprain <= 1 && answers.movement_confidence <= 3;
   },
 
   // ------------------------------------------
-  // Actionable Steps per tier
+  // Section 1: Clinical Diagnosis
+  // ------------------------------------------
+  getDiagnosis(tier) {
+    return I18n.t('diagnosis.' + tier.id);
+  },
+
+  // ------------------------------------------
+  // Section 2: Reality Check
+  // ------------------------------------------
+  getRealityCheck(tier) {
+    return I18n.t('realityCheck.' + tier.id);
+  },
+
+  // ------------------------------------------
+  // Section 3: Rehabilitation Blueprint (3 phases)
+  // ------------------------------------------
+  getBlueprint(tier) {
+    var tierId = tier.id;
+    return [
+      {
+        title: I18n.t('results.phase1.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase1')
+      },
+      {
+        title: I18n.t('results.phase2.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase2')
+      },
+      {
+        title: I18n.t('results.phase3.title'),
+        description: I18n.t('blueprint.' + tierId + '.phase3')
+      }
+    ];
+  },
+
+  // ------------------------------------------
+  // Section 4: Actionable Steps per tier
   // ------------------------------------------
   getActionableSteps(tier) {
     var tierId = tier.id;
@@ -200,7 +228,7 @@ const ScoringEngine = {
   },
 
   // ------------------------------------------
-  // CTA copy per tier
+  // Section 5: CTA copy per tier
   // ------------------------------------------
   getCTAText(tier) {
     return I18n.t('cta.' + tier.id);
