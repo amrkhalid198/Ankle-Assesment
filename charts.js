@@ -130,12 +130,12 @@ const RadarChart = {
       ctx.textBaseline = 'middle';
 
       // label
-      ctx.font      = '12px Inter, sans-serif';
+      ctx.font      = '12px "Noto Sans Arabic", Inter, sans-serif';
       ctx.fillStyle = labelClr;
       ctx.fillText(data[i].label, lx, ly - 9);
 
       // percentage
-      ctx.font      = 'bold 13px Inter, sans-serif';
+      ctx.font      = 'bold 13px "Noto Sans Arabic", Inter, sans-serif';
       ctx.fillStyle = accent;
       ctx.fillText(Math.round(data[i].value) + '%', lx, ly + 9);
     }
