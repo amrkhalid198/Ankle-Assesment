@@ -431,97 +431,133 @@
     const { total, categories, tier, isAcute } = state.results;
 
     // ── Animated score ring ──
-    animateScore(total, tier);
+    try {
+      animateScore(total, tier);
+    } catch (e) { /* score ring is non-critical */ }
 
     // ── Tier badge ──
-    $('tierBadge').innerHTML =
-      '<div class="tier-badge-inner" style="background:' + tier.colorGlow +
-      ';border:1px solid ' + tier.color +
-      ';color:' + tier.color + ';">' +
-      tier.emoji + ' ' + tier.label +
-      ' <span class="tier-sublabel">— ' + tier.sublabel + '</span></div>';
+    try {
+      $('tierBadge').innerHTML =
+        '<div class="tier-badge-inner" style="background:' + tier.colorGlow +
+        ';border:1px solid ' + tier.color +
+        ';color:' + tier.color + ';">' +
+        tier.emoji + ' ' + tier.label +
+        ' <span class="tier-sublabel">— ' + tier.sublabel + '</span></div>';
+    } catch (e) { /* tier badge is non-critical */ }
 
     // ── Acute warning ──
-    if (isAcute) $('acuteWarning').style.display = 'block';
+    try {
+      if (isAcute) $('acuteWarning').style.display = 'block';
+    } catch (e) { /* acute warning is non-critical */ }
 
     // ── Radar chart ──
-    const chartData = [
-      { label: categories.history.label,      value: categories.history.percentage },
-      { label: categories.confidence.label,   value: categories.confidence.percentage },
-      { label: categories.balance.label,      value: categories.balance.percentage },
-      { label: categories.endurance.label,    value: categories.endurance.percentage },
-      { label: categories.power.label,         value: categories.power.percentage }
-    ];
+    // Isolated in its own try/catch — a drawing error here must never
+    // prevent category bars, insights, action steps, or the CTA below
+    // from rendering (each of those is itself isolated too).
+    try {
+      const chartData = [
+        { label: categories.history.label,      value: categories.history.percentage },
+        { label: categories.confidence.label,   value: categories.confidence.percentage },
+        { label: categories.balance.label,      value: categories.balance.percentage },
+        { label: categories.endurance.label,    value: categories.endurance.percentage },
+        { label: categories.power.label,        value: categories.power.percentage }
+      ];
 
-    setTimeout(() => {
-      RadarChart.draw('radarChart', chartData, {
-        accentColor: tier.color,
-        accentRGB:   tier.colorRGB
-      });
-    }, 500);
+      // First attempt at 300ms — catches most cases
+      // Second attempt at 1000ms — guaranteed fallback if layout not yet settled
+      var drawChart = function() {
+        try {
+          RadarChart.draw('radarChart', chartData, {
+            accentColor: tier.color,
+            accentRGB:   tier.colorRGB
+          });
+        } catch (e) { /* chart drawing is non-critical */ }
+      };
+      setTimeout(drawChart, 300);
+      setTimeout(drawChart, 1000);
+    } catch (e) { /* chart setup is non-critical */ }
 
     // ── Category bars ──
-    renderCategoryBars(categories);
+    try {
+      renderCategoryBars(categories);
+    } catch (e) { /* category bars failure must not block insights below */ }
 
     // ── Insights ──
     // Primary: delegate to ScoringEngine. Fallback: build directly from I18n
     // so the diagnosis section always renders even if scoring.js has a gap.
-    var insightsContent = '';
     try {
-      insightsContent = ScoringEngine.getInsights(tier, categories) || '';
-    } catch (e) {
-      insightsContent = '';
-    }
-
-    if (!insightsContent || !insightsContent.trim()) {
-      // Build insight directly from i18n keys using tier.id
-      var tierId = (tier && tier.id) ? tier.id : 'moderate';
-      var baseInsight = (typeof I18n !== 'undefined' && I18n.t)
-        ? I18n.t('insight.' + tierId)
-        : '';
-
-      // Append weakest-category sentence with placeholder replacement
-      var weakestInsight = '';
-      if (typeof I18n !== 'undefined' && I18n.t && categories) {
-        var minPct = 101;
-        var minKey = '';
-        var minLabel = '';
-        var catKeys = ['history', 'confidence', 'balance', 'endurance', 'power'];
-        catKeys.forEach(function(k) {
-          if (categories[k] && categories[k].percentage < minPct) {
-            minPct  = categories[k].percentage;
-            minKey  = k;
-            minLabel = categories[k].label || I18n.t('cat.' + k);
-          }
-        });
-        if (minKey) {
-          weakestInsight = I18n.t('insight.weakest')
-            .replace('{label}', minLabel)
-            .replace('{pct}', Math.round(minPct));
-        }
+      var insightsContent = '';
+      try {
+        insightsContent = ScoringEngine.getInsights(tier, categories) || '';
+      } catch (e) {
+        insightsContent = '';
       }
 
-      insightsContent = [baseInsight, weakestInsight]
-        .filter(Boolean)
-        .join(' ');
+      if (!insightsContent || !insightsContent.trim()) {
+        // Build insight directly from i18n keys using tier.id
+        var tierId = (tier && tier.id) ? tier.id : 'moderate';
+        var baseInsight = (typeof I18n !== 'undefined' && I18n.t)
+          ? I18n.t('insight.' + tierId)
+          : '';
+
+        // Append weakest-category sentence with placeholder replacement
+        var weakestInsight = '';
+        if (typeof I18n !== 'undefined' && I18n.t && categories) {
+          var minPct = 101;
+          var minKey = '';
+          var minLabel = '';
+          var catKeys = ['history', 'confidence', 'balance', 'endurance', 'power'];
+          catKeys.forEach(function(k) {
+            if (categories[k] && categories[k].percentage < minPct) {
+              minPct  = categories[k].percentage;
+              minKey  = k;
+              minLabel = categories[k].label || I18n.t('cat.' + k);
+            }
+          });
+          if (minKey) {
+            weakestInsight = I18n.t('insight.weakest')
+              .replace('{label}', minLabel)
+              .replace('{pct}', Math.round(minPct));
+          }
+        }
+
+        insightsContent = [baseInsight, weakestInsight]
+          .filter(Boolean)
+          .join(' ');
+      }
+
+      $('insightsText').innerHTML = insightsContent
+        ? insightsContent.replace(/\n/g, '<br>')
+        : 'لا توجد بيانات متاحة حالياً.';
+    } catch (e) {
+      // Insights failure must not block action steps / CTA below
+      var insightsTextEl = $('insightsText');
+      if (insightsTextEl) insightsTextEl.innerHTML = 'لا توجد بيانات متاحة حالياً.';
     }
 
-    $('insightsText').innerHTML = insightsContent
-      ? insightsContent.replace(/\n/g, '<br>')
-      : 'لا توجد بيانات متاحة حالياً.';
-
     // ── Action steps ──
-    var steps = ScoringEngine.getActionableSteps(tier);
-    $('actionStepsList').innerHTML = steps.map(function (s, i) {
-      return '<div class="action-step animate-in" style="animation-delay:' +
-        (0.8 + i * 0.15) + 's;">' +
-        '<div class="action-step-number">' + (i + 1) + '</div>' +
-        '<h4>' + s.title + '</h4>' +
-        '<p>' + s.description + '</p></div>';
-    }).join('');
+    try {
+      var steps = [];
+      try {
+        steps = ScoringEngine.getActionableSteps(tier) || [];
+      } catch (e) {
+        steps = [];
+      }
+      $('actionStepsList').innerHTML = steps.map(function (s, i) {
+        return '<div class="action-step animate-in" style="animation-delay:' +
+          (0.8 + i * 0.15) + 's;">' +
+          '<div class="action-step-number">' + (i + 1) + '</div>' +
+          '<h4>' + s.title + '</h4>' +
+          '<p>' + s.description + '</p></div>';
+      }).join('');
+    } catch (e) {
+      // Action steps failure must not block the CTA below
+    }
 
     // ── CTA ──
-    $('ctaText').textContent = ScoringEngine.getCTAText(tier);
+    try {
+      $('ctaText').textContent = ScoringEngine.getCTAText(tier);
+    } catch (e) { /* CTA is non-critical */ }
   }
 
   // ── Animated counter + ring fill ──
