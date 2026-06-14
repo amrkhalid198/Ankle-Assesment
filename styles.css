@@ -117,14 +117,12 @@ body::before {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-  /* Cap content width on wide screens, but never exceed the viewport
-     (the old `max-width:640px` followed by `max-width:100vw` made the
-     640px cap dead code — the later declaration always won). */
-  max-width: min(640px, 100vw);
+  max-width: 640px;
   margin: 0 auto;
   padding: clamp(12px, 3vw, 24px);
   min-height: 100vh;
   min-height: 100dvh;
+  max-width: 100vw;
   overflow-x: hidden;
 }
 
@@ -190,12 +188,7 @@ body::before {
 .screen::-webkit-scrollbar { width: 0; background: transparent; }
 .screen.active {
   opacity: 1; transform: translateX(0);
-  pointer-events: all;
-  /* Deliberately NOT overriding position/inset here.
-     Keeping position:absolute; inset:0 (from .screen above) gives the
-     active screen a definite height equal to .screens-container, which
-     is what makes its own overflow-y:auto actually scroll tall content
-     (results page, etc.) instead of silently clipping it. */
+  pointer-events: all; position: relative;
 }
 .screen.exit-left {
   opacity: 0; transform: translateX(-40px);
@@ -404,6 +397,11 @@ body::before {
   margin-bottom: var(--sp-3xl);
   width: 100%;
 }
+.warning-text {
+  color: var(--color-warning);
+  font-family: var(--font-body);
+  margin-bottom: var(--sp-md);
+}
 .checkbox-label {
   display: flex;
   flex-direction: row;
@@ -484,6 +482,133 @@ body::before {
   box-shadow:
     0 0 0 5px rgba(232, 102, 61, 0.20),
     0 0 20px rgba(232, 102, 61, 0.20);
+}
+
+/* --- Phase 2: Hidden Radios for Option Cards --- */
+.hidden-radio {
+  position: absolute; opacity: 0; width: 0; height: 0;
+}
+.radio-label-card:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--bg-card-active);
+}
+.radio-label-card:has(input:checked) .option-icon {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+}
+.radio-label-card:has(input:checked) .radio-check {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+.radio-label-card:has(input:checked) .radio-check::after {
+  content: '✓';
+  color: var(--bg-primary);
+  font-size: 12px; font-weight: 700;
+}
+
+/* --- Phase 3: Triage Toggle Buttons --- */
+.triage-form {
+  display: flex; flex-direction: column;
+  gap: var(--sp-lg); width: 100%;
+}
+.triage-question-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: var(--sp-lg);
+}
+.triage-q-title {
+  font-family: var(--font-heading);
+  font-size: 15px; font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-md);
+  line-height: 1.6;
+}
+.triage-options {
+  display: flex; gap: var(--sp-md);
+}
+.triage-btn {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--sp-md);
+  min-height: 48px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: all var(--t-default);
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 15px; font-weight: 600;
+}
+.triage-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--text-muted);
+  color: var(--text-primary);
+}
+.triage-btn:has(input[value="yes"]:checked) {
+  background: rgba(201, 68, 68, 0.08);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+.triage-btn:has(input[value="no"]:checked) {
+  background: rgba(58, 158, 110, 0.08);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+/* Hard Stop & Clearance Visuals */
+.stop-icon, .go-icon {
+  width: 72px; height: 72px;
+  margin: 0 auto var(--sp-lg);
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r-xl);
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+.stop-icon {
+  background: rgba(201, 68, 68, 0.08);
+  border: 1px solid rgba(201, 68, 68, 0.25);
+  color: var(--color-danger);
+}
+.stop-icon svg {
+  width: 32px; height: 32px;
+  stroke: var(--color-danger);
+  stroke-width: 1.5;
+  fill: none;
+}
+.go-icon {
+  background: rgba(58, 158, 110, 0.08);
+  border: 1px solid rgba(58, 158, 110, 0.25);
+  color: var(--color-success);
+}
+.go-icon svg {
+  width: 32px; height: 32px;
+  stroke: var(--color-success);
+  stroke-width: 1.5;
+  fill: none;
+}
+
+.first-aid-guide {
+  background: rgba(201, 68, 68, 0.05);
+  border: 1px solid rgba(201, 68, 68, 0.15);
+  border-radius: var(--r-lg);
+  padding: var(--sp-lg);
+  margin-top: var(--sp-xl);
+  width: 100%;
+}
+.first-aid-guide h3 {
+  color: var(--color-danger);
+  margin-bottom: var(--sp-md);
+  font-family: var(--font-heading);
+  font-size: 15px;
+}
+.first-aid-guide ul { list-style: none; padding-left: 0; }
+.first-aid-guide li {
+  margin-bottom: var(--sp-sm);
+  color: var(--text-secondary);
+  font-size: 14px;
+  position: relative;
+  line-height: 1.7;
 }
 
 /* ============================================
@@ -1281,6 +1406,7 @@ input[type="range"]::-moz-range-thumb {
   input[type="range"]::-webkit-slider-thumb { width: 32px; height: 32px; }
   input[type="range"]::-moz-range-thumb { width: 32px; height: 32px; }
   .option-card { min-height: 52px; padding: var(--sp-md); }
+  .triage-btn { min-height: 48px; }
 
   /* Ensure disclaimer box doesn't clip on small screens */
   .disclaimer-box { padding: var(--sp-md); }
@@ -1361,6 +1487,26 @@ input[type="range"]::-moz-range-thumb {
   border-left: none;
   border-right: 3px solid var(--color-warning);
 }
+[dir="rtl"] .triage-question label {
+  margin-right: 0;
+  margin-left: var(--sp-xl);
+}
+[dir="rtl"] .triage-question-block { text-align: right; }
+[dir="rtl"] .triage-options { flex-direction: row-reverse; }
+[dir="rtl"] .first-aid-guide li {
+  padding-left: 0;
+  padding-right: var(--sp-lg);
+}
+[dir="rtl"] .first-aid-guide li::before {
+  left: auto; right: 0;
+}
+[dir="rtl"] .first-aid-guide { text-align: right; }
+[dir="rtl"] .stop-screen .screen-content,
+[dir="rtl"] .go-screen .screen-content { text-align: right; }
+[dir="rtl"] .stop-screen h2,
+[dir="rtl"] .go-screen h2 { text-align: center; }
+[dir="rtl"] .stop-screen p,
+[dir="rtl"] .go-screen p { text-align: right; }
 
 /* Phase label — RTL handled in base rule (direction: rtl, dash on right) */
 
@@ -1395,6 +1541,13 @@ input[type="range"]::-moz-range-thumb {
 
 /* Category bar header */
 [dir="rtl"] .category-bar-header { flex-direction: row-reverse; }
+
+/* Category bar fill — gradient direction */
+[dir="rtl"] .category-bar-fill { background: var(--accent); }
+
+/* Progress bar fill + dot */
+[dir="rtl"] .progress-fill { background: var(--accent); }
+[dir="rtl"] .progress-fill::after { right: auto; left: -3px; }
 
 /* Email form */
 [dir="rtl"] .email-form { flex-direction: row-reverse; }
@@ -1432,6 +1585,7 @@ input[type="range"]::-moz-range-thumb {
 [dir="rtl"] .action-step p,
 [dir="rtl"] .action-step h4,
 [dir="rtl"] .acute-warning p,
+[dir="rtl"] .triage-q-title,
 [dir="rtl"] .action-steps-title,
 [dir="rtl"] .insights-title,
 [dir="rtl"] .disclaimer-lead-text,
@@ -1456,6 +1610,9 @@ input[type="range"]::-moz-range-thumb {
 
 /* Contraindications list RTL - items align right */
 [dir="rtl"] .contraindications-list li { text-align: right; }
+
+/* First-aid guide RTL items */
+[dir="rtl"] .first-aid-guide li { text-align: right; }
 
 /* Mobile RTL */
 @media (max-width: 480px) {
@@ -1566,6 +1723,7 @@ input[type="range"]::-moz-range-thumb {
 [dir="rtl"] .disclaimer-lead-text,
 [dir="rtl"] .disclaimer-prohibition-text,
 [dir="rtl"] .contraindications-list li,
+[dir="rtl"] .triage-q-title,
 [dir="rtl"] .action-step h4,
 [dir="rtl"] .action-step p,
 [dir="rtl"] .insights-text,
