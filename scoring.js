@@ -172,63 +172,48 @@ const ScoringEngine = {
   },
 
   // ------------------------------------------
-  // Section 1: Clinical Diagnosis
+  // Diagnosis: tier explanation + weakest category
   // ------------------------------------------
-  getDiagnosis(tier) {
-    return I18n.t('diagnosis.' + tier.id);
+  getInsights(tier, categories) {
+    var tierId = (tier && tier.id) ? tier.id : 'moderate';
+    var parts  = [I18n.t('insight.' + tierId)];
+
+    var weakest = this.getWeakestCategory(categories);
+    if (weakest) {
+      parts.push(
+        I18n.t('insight.weakest')
+          .replace('{label}', weakest.label)
+          .replace('{pct}', weakest.percentage)
+      );
+    }
+
+    return parts.filter(Boolean).join(' ');
   },
 
-  // ------------------------------------------
-  // Section 2: Reality Check
-  // ------------------------------------------
-  getRealityCheck(tier) {
-    return I18n.t('realityCheck.' + tier.id);
-  },
+  /** Lowest-scoring category — the one deficit to name in the diagnosis */
+  getWeakestCategory(categories) {
+    if (!categories) return null;
 
-  // ------------------------------------------
-  // Section 3: Rehabilitation Blueprint (3 phases)
-  // ------------------------------------------
-  getBlueprint(tier) {
-    var tierId = tier.id;
-    return [
-      {
-        title: I18n.t('results.phase1.title'),
-        description: I18n.t('blueprint.' + tierId + '.phase1')
-      },
-      {
-        title: I18n.t('results.phase2.title'),
-        description: I18n.t('blueprint.' + tierId + '.phase2')
-      },
-      {
-        title: I18n.t('results.phase3.title'),
-        description: I18n.t('blueprint.' + tierId + '.phase3')
+    var keys = ['history', 'confidence', 'balance', 'endurance', 'power'];
+    var weakest = null;
+
+    keys.forEach(function (key) {
+      var c = categories[key];
+      if (!c) return;
+      if (!weakest || c.percentage < weakest.percentage) {
+        weakest = {
+          key:        key,
+          label:      c.label || I18n.t('cat.' + key),
+          percentage: Math.round(c.percentage)
+        };
       }
-    ];
+    });
+
+    return weakest;
   },
 
   // ------------------------------------------
-  // Section 4: Actionable Steps per tier
-  // ------------------------------------------
-  getActionableSteps(tier) {
-    var tierId = tier.id;
-    return [
-      {
-        title:       I18n.t('action.' + tierId + '.1.title'),
-        description: I18n.t('action.' + tierId + '.1.desc')
-      },
-      {
-        title:       I18n.t('action.' + tierId + '.2.title'),
-        description: I18n.t('action.' + tierId + '.2.desc')
-      },
-      {
-        title:       I18n.t('action.' + tierId + '.3.title'),
-        description: I18n.t('action.' + tierId + '.3.desc')
-      }
-    ];
-  },
-
-  // ------------------------------------------
-  // Section 5: CTA copy per tier
+  // CTA copy per tier
   // ------------------------------------------
   getCTAText(tier) {
     return I18n.t('cta.' + tier.id);

@@ -1171,35 +1171,6 @@ input[type="range"]::-moz-range-thumb {
   white-space: pre-line;
 }
 
-/* Action Steps */
-.action-steps { margin-bottom: var(--sp-xl); }
-.action-steps-title {
-  font-family: var(--font-heading); font-size: 18px;
-  font-weight: 700; margin-bottom: var(--sp-lg);
-}
-.action-step {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-lg); padding: var(--sp-lg);
-  margin-bottom: var(--sp-md);
-  position: relative; padding-left: calc(var(--sp-lg) + 36px);
-}
-.action-step-number {
-  position: absolute; left: var(--sp-lg); top: var(--sp-lg);
-  width: 24px; height: 24px;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--accent-glow);
-  border: 1px solid var(--border-active);
-  border-radius: var(--r-full);
-  font-family: var(--font-mono); font-size: 11px;
-  font-weight: 700; color: var(--accent);
-}
-.action-step h4 {
-  font-family: var(--font-heading); font-weight: 700;
-  font-size: 15px; margin-bottom: var(--sp-xs);
-}
-.action-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
-
 /* Category Bars */
 .category-bars { margin: var(--sp-xl) 0; }
 .category-bar { margin-bottom: var(--sp-lg); }
@@ -1388,8 +1359,7 @@ input[type="range"]::-moz-range-thumb {
   .question-subtext,
   .option-desc,
   .test-instructions li,
-  .insights-text,
-  .action-step p { line-height: 1.85; }
+  .insights-text { line-height: 1.85; }
 
   /* Tighter welcome title on very small screens */
   .welcome-title { font-size: clamp(22px, 6vw, 32px); }
@@ -1525,13 +1495,6 @@ input[type="range"]::-moz-range-thumb {
 /* Option card info text */
 [dir="rtl"] .option-info { text-align: right; }
 
-/* Action steps — number positioning */
-[dir="rtl"] .action-step {
-  padding-left: var(--sp-lg);
-  padding-right: calc(var(--sp-lg) + 36px);
-}
-[dir="rtl"] .action-step-number { left: auto; right: var(--sp-lg); }
-
 /* Test instructions — counter positioning */
 [dir="rtl"] .test-instructions li {
   padding-left: 0;
@@ -1582,11 +1545,8 @@ input[type="range"]::-moz-range-thumb {
 [dir="rtl"] .test-purpose,
 [dir="rtl"] .phase-transition p,
 [dir="rtl"] .insights-text,
-[dir="rtl"] .action-step p,
-[dir="rtl"] .action-step h4,
 [dir="rtl"] .acute-warning p,
 [dir="rtl"] .triage-q-title,
-[dir="rtl"] .action-steps-title,
 [dir="rtl"] .insights-title,
 [dir="rtl"] .disclaimer-lead-text,
 [dir="rtl"] .disclaimer-prohibition-text,
@@ -1724,8 +1684,6 @@ input[type="range"]::-moz-range-thumb {
 [dir="rtl"] .disclaimer-prohibition-text,
 [dir="rtl"] .contraindications-list li,
 [dir="rtl"] .triage-q-title,
-[dir="rtl"] .action-step h4,
-[dir="rtl"] .action-step p,
 [dir="rtl"] .insights-text,
 [dir="rtl"] .category-bar-label,
 [dir="rtl"] .welcome-time,

@@ -482,76 +482,16 @@
       renderCategoryBars(categories);
     } catch (e) { /* category bars failure must not block insights below */ }
 
-    // ── Insights ──
-    // Primary: delegate to ScoringEngine. Fallback: build directly from I18n
-    // so the diagnosis section always renders even if scoring.js has a gap.
+    // ── Diagnosis ──
     try {
-      var insightsContent = '';
-      try {
-        insightsContent = ScoringEngine.getInsights(tier, categories) || '';
-      } catch (e) {
-        insightsContent = '';
-      }
-
-      if (!insightsContent || !insightsContent.trim()) {
-        // Build insight directly from i18n keys using tier.id
-        var tierId = (tier && tier.id) ? tier.id : 'moderate';
-        var baseInsight = (typeof I18n !== 'undefined' && I18n.t)
-          ? I18n.t('insight.' + tierId)
-          : '';
-
-        // Append weakest-category sentence with placeholder replacement
-        var weakestInsight = '';
-        if (typeof I18n !== 'undefined' && I18n.t && categories) {
-          var minPct = 101;
-          var minKey = '';
-          var minLabel = '';
-          var catKeys = ['history', 'confidence', 'balance', 'endurance', 'power'];
-          catKeys.forEach(function(k) {
-            if (categories[k] && categories[k].percentage < minPct) {
-              minPct  = categories[k].percentage;
-              minKey  = k;
-              minLabel = categories[k].label || I18n.t('cat.' + k);
-            }
-          });
-          if (minKey) {
-            weakestInsight = I18n.t('insight.weakest')
-              .replace('{label}', minLabel)
-              .replace('{pct}', Math.round(minPct));
-          }
-        }
-
-        insightsContent = [baseInsight, weakestInsight]
-          .filter(Boolean)
-          .join(' ');
-      }
-
+      var insightsContent = ScoringEngine.getInsights(tier, categories) || '';
       $('insightsText').innerHTML = insightsContent
         ? insightsContent.replace(/\n/g, '<br>')
         : 'لا توجد بيانات متاحة حالياً.';
     } catch (e) {
-      // Insights failure must not block action steps / CTA below
+      // Diagnosis failure must not block the CTA below
       var insightsTextEl = $('insightsText');
       if (insightsTextEl) insightsTextEl.innerHTML = 'لا توجد بيانات متاحة حالياً.';
-    }
-
-    // ── Action steps ──
-    try {
-      var steps = [];
-      try {
-        steps = ScoringEngine.getActionableSteps(tier) || [];
-      } catch (e) {
-        steps = [];
-      }
-      $('actionStepsList').innerHTML = steps.map(function (s, i) {
-        return '<div class="action-step animate-in" style="animation-delay:' +
-          (0.8 + i * 0.15) + 's;">' +
-          '<div class="action-step-number">' + (i + 1) + '</div>' +
-          '<h4>' + s.title + '</h4>' +
-          '<p>' + s.description + '</p></div>';
-      }).join('');
-    } catch (e) {
-      // Action steps failure must not block the CTA below
     }
 
     // ── CTA ──
@@ -694,11 +634,9 @@
       // Clear stale results DOM
       var tierBadgeEl = $('tierBadge');
       var categoryBarsEl = $('categoryBars');
-      var actionStepsListEl = $('actionStepsList');
       var insightsTextEl = $('insightsText');
       if (tierBadgeEl)      tierBadgeEl.innerHTML      = '';
       if (categoryBarsEl)   categoryBarsEl.innerHTML   = '';
-      if (actionStepsListEl) actionStepsListEl.innerHTML = '';
       if (insightsTextEl)   insightsTextEl.innerHTML   = '';
 
       var scoreValueEl = $('scoreValue');
