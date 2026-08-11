@@ -554,7 +554,6 @@
     if (!bar) return;
 
     var screen  = $('screen-results');
-    var score   = document.querySelector('#screen-results .score-display');
     var realBtn = $('ctaButton');
 
     var onResults = screen &&
@@ -562,15 +561,20 @@
       !screen.classList.contains('hidden');
 
     var show = false;
-    if (onResults && score && realBtn) {
-      // Viewport-relative so this works whether the document or the
-      // screen element is the thing actually scrolling.
-      var viewportH = window.innerHeight || document.documentElement.clientHeight;
-      var scoreGone = score.getBoundingClientRect().bottom < 0;
+    if (onResults && realBtn) {
+      // A short flick of the thumb is enough to bring the bar in — tying it to
+      // an element's position made it arrive at different points on different
+      // screen sizes. Hysteresis (120 in / 80 out) stops it flickering when
+      // someone rests right on the threshold.
+      var scrolled   = Math.max(window.scrollY || 0, screen.scrollTop || 0);
+      var wasVisible = bar.classList.contains('visible');
+      var scrolledIn = scrolled > (wasVisible ? 80 : 120);
+
       // Track the real button, not its card — the card is ~600px tall, so its
       // top edge scrolls into view long before the button the bar duplicates.
+      var viewportH = window.innerHeight || document.documentElement.clientHeight;
       var btnInView = realBtn.getBoundingClientRect().top < viewportH - 60;
-      show = scoreGone && !btnInView;
+      show = scrolledIn && !btnInView;
     }
 
     bar.classList.toggle('visible', show);

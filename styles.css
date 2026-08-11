@@ -1313,17 +1313,18 @@ input[type="range"]::-moz-range-thumb {
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.25s ease,
-              visibility 0s linear 0.35s;
+  /* Long, soft ease — the bar should drift into place, not snap */
+  transition: transform 0.62s cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 0s linear 0.62s;
 }
 .sticky-cta.visible {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.25s ease,
+  transition: transform 0.62s cubic-bezier(0.32, 0.72, 0, 1),
+              opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               visibility 0s;
 }
 .sticky-cta-inner {
@@ -1390,8 +1391,8 @@ input[type="range"]::-moz-range-thumb {
   .sticky-cta-score { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sticky-cta { transition: opacity 0.2s ease, visibility 0s linear 0.2s; transform: none; }
-  .sticky-cta.visible { transition: opacity 0.2s ease, visibility 0s; transform: none; }
+  .sticky-cta { transition: opacity 0.3s ease, visibility 0s linear 0.3s; transform: none; }
+  .sticky-cta.visible { transition: opacity 0.3s ease, visibility 0s; transform: none; }
 }
 
 /* ============================================
