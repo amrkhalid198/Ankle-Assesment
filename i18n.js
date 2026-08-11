@@ -207,6 +207,7 @@ const I18n = {
     'results.acuteWarning.text': 'بناءً على إجاباتك، قد تكون الإصابة ما زالت في المرحلة الحادة. يُفضّل مراجعة مختص قبل بدء التأهيل.',
     'results.insights.title': 'ماذا يعني هذا',
     'results.cta.title': 'جاهز تبدأ النظام الكامل؟',
+    'stickyCta.button': 'ابدأ الـ PROTOCOL',
     'results.cta.button': 'احصل على الـ System ←',
     'results.retake': 'إعادة التقييم (Retake)',
 

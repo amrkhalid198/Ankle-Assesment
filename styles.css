@@ -1296,6 +1296,105 @@ input[type="range"]::-moz-range-thumb {
 .retake-container { text-align: center; padding: var(--sp-xl) 0; }
 
 /* ============================================
+   Sticky CTA — keeps the offer one tap away
+   while the patient reads the analysis
+   ============================================ */
+.sticky-cta {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 90;                 /* above back button (50), below overlays */
+  padding: 10px clamp(12px, 3vw, 24px);
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  background: rgba(12, 14, 16, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(232, 102, 61, 0.22);
+  transform: translateY(110%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.25s ease,
+              visibility 0s linear 0.35s;
+}
+.sticky-cta.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.25s ease,
+              visibility 0s;
+}
+.sticky-cta-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-md);
+}
+.sticky-cta-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  min-width: 0;               /* lets the tier label ellipsis instead of pushing the button */
+}
+.sticky-cta-score {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent);       /* overridden per-tier from JS */
+  white-space: nowrap;
+}
+.sticky-cta-score small {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-inline-start: 1px;
+}
+.sticky-cta-tier {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sticky-cta-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 20px;
+  background: var(--accent);
+  color: #0C0E10;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--r-lg);
+  letter-spacing: 0;
+  box-shadow: 0 4px 16px rgba(232, 102, 61, 0.28);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+}
+.sticky-cta-btn:hover {
+  background: #F0764D;
+  box-shadow: 0 6px 22px rgba(232, 102, 61, 0.4);
+  transform: translateY(-1px);
+}
+.sticky-cta-btn:active { transform: translateY(0); }
+
+@media (max-width: 380px) {
+  .sticky-cta-btn { padding: 12px 14px; font-size: 13px; }
+  .sticky-cta-score { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-cta { transition: opacity 0.2s ease, visibility 0s linear 0.2s; transform: none; }
+  .sticky-cta.visible { transition: opacity 0.2s ease, visibility 0s; transform: none; }
+}
+
+/* ============================================
    Animations — Subtle, clinical
    ============================================ */
 @keyframes pulse-glow {

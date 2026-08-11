@@ -498,6 +498,94 @@
     try {
       $('ctaText').textContent = ScoringEngine.getCTAText(tier);
     } catch (e) { /* CTA is non-critical */ }
+
+    // ── Sticky CTA ──
+    try {
+      setupStickyCta(total, tier);
+    } catch (e) { /* sticky bar is an enhancement, never block the page */ }
+  }
+
+  // ============================================
+  // Sticky CTA bar
+  // Shows once the score ring has scrolled out of view, hides again
+  // when the full CTA card is on screen so the two never stack.
+  // ============================================
+  var stickyScrollBound = false;
+
+  function setupStickyCta(total, tier) {
+    var bar = $('stickyCta');
+    if (!bar) return;
+
+    // Carry the personal result into the bar — the pitch stays tied to their score
+    var scoreEl = $('stickyCtaScore');
+    var tierEl  = $('stickyCtaTier');
+    if (scoreEl) {
+      scoreEl.innerHTML = total + '<small>/100</small>';
+      scoreEl.style.color = tier.color;
+    }
+    // Short clinical name only — the full bilingual label is too long for the
+    // bar and truncates mid-word. The full version stays in the tier badge.
+    if (tierEl) tierEl.textContent = String(tier.label).split('(')[0].trim();
+
+    var screen = $('screen-results');
+    if (screen && !stickyScrollBound) {
+      var ticking = false;
+      var onScroll = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function () {
+          ticking = false;
+          updateStickyCta();
+        });
+      };
+      // The document scrolls in tall layouts, the screen element in short ones —
+      // listen to both so the bar tracks either way.
+      window.addEventListener('scroll', onScroll, { passive: true });
+      screen.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+      stickyScrollBound = true;
+    }
+
+    updateStickyCta();
+  }
+
+  function updateStickyCta() {
+    var bar = $('stickyCta');
+    if (!bar) return;
+
+    var screen  = $('screen-results');
+    var score   = document.querySelector('#screen-results .score-display');
+    var realBtn = $('ctaButton');
+
+    var onResults = screen &&
+      screen.classList.contains('active') &&
+      !screen.classList.contains('hidden');
+
+    var show = false;
+    if (onResults && score && realBtn) {
+      // Viewport-relative so this works whether the document or the
+      // screen element is the thing actually scrolling.
+      var viewportH = window.innerHeight || document.documentElement.clientHeight;
+      var scoreGone = score.getBoundingClientRect().bottom < 0;
+      // Track the real button, not its card — the card is ~600px tall, so its
+      // top edge scrolls into view long before the button the bar duplicates.
+      var btnInView = realBtn.getBoundingClientRect().top < viewportH - 60;
+      show = scoreGone && !btnInView;
+    }
+
+    bar.classList.toggle('visible', show);
+    bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+    var btn = $('stickyCtaBtn');
+    if (btn) btn.setAttribute('tabindex', show ? '0' : '-1');
+  }
+
+  function hideStickyCta() {
+    var bar = $('stickyCta');
+    if (!bar) return;
+    bar.classList.remove('visible');
+    bar.setAttribute('aria-hidden', 'true');
+    var btn = $('stickyCtaBtn');
+    if (btn) btn.setAttribute('tabindex', '-1');
   }
 
   // ── Animated counter + ring fill ──
@@ -602,6 +690,7 @@
       state.onLegalScreen = false;
       if (state.timer)   state.timer.reset();
       if (state.counter) state.counter.reset();
+      hideStickyCta();
 
       // Reset visual state
       $$('.option-card.selected').forEach(function (c) { c.classList.remove('selected'); });

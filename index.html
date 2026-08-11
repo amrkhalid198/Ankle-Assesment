@@ -570,6 +570,19 @@
       <svg viewBox="0 0 20 20"><polyline points="12,4 6,10 12,16" /></svg>
     </button>
 
+    <!-- Sticky CTA — results screen only. Slides up once the score ring
+         scrolls away, hides again when the full CTA card comes into view. -->
+    <div class="sticky-cta" id="stickyCta" aria-hidden="true">
+      <div class="sticky-cta-inner">
+        <div class="sticky-cta-info">
+          <span class="sticky-cta-score" id="stickyCtaScore">0<small>/100</small></span>
+          <span class="sticky-cta-tier" id="stickyCtaTier"></span>
+        </div>
+        <a href="https://amrkhalid198.github.io/Landing-page/" target="_blank" rel="noopener"
+           class="sticky-cta-btn" id="stickyCtaBtn" data-i18n="stickyCta.button" tabindex="-1">ابدأ الـ ANKLE PROTOCOL</a>
+      </div>
+    </div>
+
   </div>
   
   <div class="calculating-overlay" id="calculatingOverlay">
