@@ -666,7 +666,11 @@
             var params = '?email=' + encodeURIComponent(email) +
                          '&score=' + encodeURIComponent(preResults.total) +
                          '&tier='  + encodeURIComponent(preResults.tier.id);
-            fetch(SHEETS_ENDPOINT + params, { mode: 'no-cors' });
+            // .catch is required as well as the try/catch: a network failure
+            // rejects the promise rather than throwing synchronously, and an
+            // unhandled rejection surfaces as a console error.
+            fetch(SHEETS_ENDPOINT + params, { mode: 'no-cors' })
+              .catch(function () { /* lead capture is best-effort */ });
           } catch (_) { /* silently fail — don't block the user */ }
 
           showCalculating();
