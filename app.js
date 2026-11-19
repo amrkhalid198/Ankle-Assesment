@@ -649,7 +649,7 @@
   // ============================================
   // Email Gate (mandatory pre-results)
   // ============================================
-  const REGISTRATION_ENDPOINT = '__APPS_SCRIPT_DEPLOYMENT_URL__';
+  const REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz-GjJzMctjPpHBKsJzzLdKojFfbxn4xkq4nvoR6_GWcMSneaC85LZJID2bxlK0jL9D/exec';
 
   function saveRegistration(registration) {
     return new Promise(function (resolve, reject) {
