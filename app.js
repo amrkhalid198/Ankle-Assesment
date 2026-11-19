@@ -649,42 +649,124 @@
   // ============================================
   // Email Gate (mandatory pre-results)
   // ============================================
-  var SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxagSVSaWBM3Q6Rn2sBsNNmeB6KW6zYvaGBWuDnuNIHrDIzouF4dH9amBMxx0kSZGgU/exec';
+  const REGISTRATION_ENDPOINT = '__APPS_SCRIPT_DEPLOYMENT_URL__';
+
+  function saveRegistration(registration) {
+    return new Promise(function (resolve, reject) {
+      const responseFrame = document.createElement('iframe');
+      responseFrame.name = 'assessment-signup-' + registration.id;
+      responseFrame.hidden = true;
+      responseFrame.setAttribute('aria-hidden', 'true');
+      responseFrame.referrerPolicy = 'no-referrer';
+
+      const request = document.createElement('form');
+      request.hidden = true;
+      request.method = 'post';
+      request.action = REGISTRATION_ENDPOINT;
+      request.target = responseFrame.name;
+
+      const payload = document.createElement('input');
+      payload.type = 'hidden';
+      payload.name = 'payload';
+      payload.value = JSON.stringify(registration);
+      request.append(payload);
+
+      function finish(error) {
+        clearTimeout(timeout);
+        window.removeEventListener('message', receive);
+        request.remove();
+        responseFrame.remove();
+        if (error) reject(error);
+        else resolve();
+      }
+
+      function receive(event) {
+        const trustedOrigin = event.origin === 'https://script.google.com' ||
+          /^https:\/\/(?:[a-z0-9-]+-)?script\.googleusercontent\.com$/.test(event.origin);
+        const reply = event.data;
+        if (!trustedOrigin || !event.source || event.source.top !== window ||
+            reply?.type !== 'ankle-registration' || reply.id !== registration.id) return;
+
+        finish(reply.ok === true ? null : new Error(reply.error));
+      }
+
+      const timeout = setTimeout(function () { finish(new Error('timeout')); }, 35000);
+      window.addEventListener('message', receive);
+      try {
+        document.body.append(responseFrame, request);
+        request.submit();
+      } catch (error) {
+        finish(error);
+      }
+    });
+  }
 
   function setupEmailGate() {
-    var errorEl = $('gateEmailError');
-    if(errorEl) errorEl.style.display = 'none';
+    const form = $('gateEmailForm');
+    const input = $('gateEmailInput');
+    const optIn = $('gateProgramOptIn');
+    const submit = $('gateEmailSubmit');
+    const error = $('gateEmailError');
+    let previous;
+    let saving = false;
 
-    var submitBtn = $('gateEmailSubmit');
-    if(submitBtn) {
-      submitBtn.addEventListener('click', function () {
-        var email = $('gateEmailInput').value.trim();
-        if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          errorEl.style.display = 'none';
-
-          // Pre-calculate results
-          var preResults = ScoringEngine.calculate(state.answers);
-
-          // Send to Google Sheets via GET (reliable, no CORS issues)
-          try {
-            var params = '?email=' + encodeURIComponent(email) +
-                         '&score=' + encodeURIComponent(preResults.total) +
-                         '&tier='  + encodeURIComponent(preResults.tier.id);
-            // .catch is required as well as the try/catch: a network failure
-            // rejects the promise rather than throwing synchronously, and an
-            // unhandled rejection surfaces as a console error.
-            fetch(SHEETS_ENDPOINT + params, { mode: 'no-cors' })
-              .catch(function () { /* lead capture is best-effort */ });
-          } catch (_) { /* silently fail — don't block the user */ }
-
-          showCalculating();
-        } else {
-          errorEl.style.display = 'block';
-          $('gateEmailInput').style.borderColor = 'var(--color-danger)';
-          setTimeout(function () { $('gateEmailInput').style.borderColor = ''; }, 2000);
-        }
-      });
+    function showError(message) {
+      error.textContent = message;
+      error.hidden = !message;
     }
+
+    form.addEventListener('input', function () {
+      input.removeAttribute('aria-invalid');
+      showError('');
+    });
+
+    form.addEventListener('reset', function () {
+      previous = undefined;
+      input.removeAttribute('aria-invalid');
+      showError('');
+    });
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      if (saving) return;
+      showError('');
+      if (!input.validity.valid || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())) {
+        input.setAttribute('aria-invalid', 'true');
+        showError(I18n.t('emailGate.error'));
+        input.focus();
+        return;
+      }
+
+      const result = ScoringEngine.calculate(state.answers);
+      const registration = {
+        email: input.value.trim(),
+        score: result.total,
+        tier: result.tier.id,
+        optIn: optIn.checked
+      };
+      const key = JSON.stringify(registration);
+      const id = previous?.key === key ? previous.id : crypto.randomUUID();
+      previous = { key, id };
+
+      saving = true;
+      input.disabled = optIn.disabled = submit.disabled = true;
+      submit.textContent = I18n.t('emailGate.saving');
+      try {
+        await saveRegistration({ ...registration, id });
+        if (previous?.id === id) {
+          previous = undefined;
+          if (state.currentStep === EMAIL_GATE) showCalculating();
+        }
+      } catch (failure) {
+        if (previous?.id === id && state.currentStep === EMAIL_GATE) {
+          showError(I18n.t(failure.message === 'rate_limited' ? 'emailGate.rateLimit' : 'emailGate.saveError'));
+        }
+      } finally {
+        saving = false;
+        input.disabled = optIn.disabled = submit.disabled = false;
+        submit.textContent = I18n.t('emailGate.submit');
+      }
+    });
   }
 
   // ============================================
@@ -713,8 +795,7 @@
       $('balanceStart').style.display = 'block';
       $('balanceStop').style.display  = 'none';
       $('progressContainer').style.display = 'none';
-      $('gateEmailInput').value = '';
-      if($('gateEmailError')) $('gateEmailError').style.display = 'none';
+      $('gateEmailForm').reset();
       if($('acuteWarning')) $('acuteWarning').style.display = 'none';
 
       // Reset both SVG rings
