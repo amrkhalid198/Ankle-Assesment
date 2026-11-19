@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
 </head>
 <body>
 
@@ -488,14 +488,10 @@
           <div class="email-gate">
             <div class="email-gate-icon"><svg viewBox="0 0 20 20"><rect x="3" y="10" width="3" height="7" rx="1" /><rect x="8.5" y="6" width="3" height="11" rx="1" /><rect x="14" y="3" width="3" height="14" rx="1" /></svg></div>
             <h2 class="email-gate-title" data-i18n="emailGate.title">نتائجك جاهزة تقريباً!</h2>
-            <p class="email-gate-desc" data-i18n="emailGate.desc">أدخل بريدك الإلكتروني لعرض تقرير تقييمك المفصل.</p>
+            <p class="email-gate-desc" data-i18n="emailGate.desc">اكتب إيميلك عشان تشوف تقريرك. هنبعتلك إيميل عن برنامج Bulletproof Ankle بعد حوالي ساعة.</p>
             <form class="email-gate-form" id="gateEmailForm" novalidate>
               <input type="email" id="gateEmailInput" data-i18n="emailGate.placeholder" placeholder="بريدك الإلكتروني"
                 aria-label="البريد الإلكتروني" aria-describedby="gateEmailError" autocomplete="email" maxlength="254" dir="ltr" required>
-              <label class="email-gate-opt-in">
-                <input type="checkbox" id="gateProgramOptIn">
-                <span data-i18n="emailGate.optIn">ابعتلي تفاصيل برنامج Bulletproof Ankle على الإيميل.</span>
-              </label>
               <p class="email-gate-error" id="gateEmailError" role="alert" hidden></p>
               <button class="btn-primary" id="gateEmailSubmit" type="submit" data-i18n="emailGate.submit">عرض النتائج</button>
             </form>
@@ -595,12 +591,12 @@
     <div class="calculating-text" data-i18n="calculating.text">جارٍ تحليل نتائجك…</div>
   </div>
 
-  <script src="i18n.js?v=confirmed-registration"></script>
+  <script src="i18n.js?v=program-follow-up"></script>
   <script>I18n.init();</script>
   <script src="scoring.js"></script>
   <script src="timer.js"></script>
   <script src="charts.js"></script>
-  <script src="app.js?v=confirmed-registration"></script>
+  <script src="app.js?v=program-follow-up"></script>
 
 </body>
 </html>

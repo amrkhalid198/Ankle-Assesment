@@ -1749,12 +1749,6 @@ input[type="range"]::-moz-range-thumb {
   color: var(--color-danger); font-size: 12px;
   margin: 0;
 }
-.email-gate-opt-in {
-  align-self: center;
-  display: flex; align-items: baseline; gap: var(--sp-sm);
-  text-align: start; color: var(--text-primary); font-size: 14px;
-}
-.email-gate-opt-in input { accent-color: var(--accent); }
 
 /* ============================================
    Welcome Badge — centered in brand header

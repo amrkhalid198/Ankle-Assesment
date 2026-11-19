@@ -704,7 +704,6 @@
   function setupEmailGate() {
     const form = $('gateEmailForm');
     const input = $('gateEmailInput');
-    const optIn = $('gateProgramOptIn');
     const submit = $('gateEmailSubmit');
     const error = $('gateEmailError');
     let previous;
@@ -742,14 +741,14 @@
         email: input.value.trim(),
         score: result.total,
         tier: result.tier.id,
-        optIn: optIn.checked
+        flow: 'program-follow-up'
       };
       const key = JSON.stringify(registration);
       const id = previous?.key === key ? previous.id : crypto.randomUUID();
       previous = { key, id };
 
       saving = true;
-      input.disabled = optIn.disabled = submit.disabled = true;
+      input.disabled = submit.disabled = true;
       submit.textContent = I18n.t('emailGate.saving');
       try {
         await saveRegistration({ ...registration, id });
@@ -763,7 +762,7 @@
         }
       } finally {
         saving = false;
-        input.disabled = optIn.disabled = submit.disabled = false;
+        input.disabled = submit.disabled = false;
         submit.textContent = I18n.t('emailGate.submit');
       }
     });
