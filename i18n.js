@@ -223,7 +223,11 @@ const I18n = {
     // Email Gateway
     // ==========================================
     'emailGate.title': 'النتيجة بتاعتك جاهزة!',
-    'emailGate.desc': 'اكتب الـ Email بتاعك عشان تشوف التقرير المفصل لحالتك.',
+    'emailGate.desc': 'اكتب إيميلك عشان تشوف تقريرك. هنحفظ الإيميل ودرجة التقييم.',
+    'emailGate.optIn': 'ابعتلي تفاصيل برنامج Bulletproof Ankle على الإيميل.',
+    'emailGate.saving': 'بنحفظ تسجيلك…',
+    'emailGate.saveError': 'ما قدرناش نأكد حفظ تسجيلك. جرّب تاني.',
+    'emailGate.rateLimit': 'فيه ضغط على التسجيل دلوقتي. جرّب تاني بعد شوية.',
     'emailGate.placeholder': 'البريد الإلكتروني',
     'emailGate.submit': 'عرض النتيجة',
     'emailGate.error': 'أدخل إيميل صحيح من فضلك',
