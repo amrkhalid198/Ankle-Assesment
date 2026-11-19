@@ -1726,7 +1726,7 @@ input[type="range"]::-moz-range-thumb {
   letter-spacing: -0.3px;
 }
 .email-gate-desc {
-  font-size: 14px; color: var(--text-secondary);
+  font-size: 14px; color: var(--text-primary);
   margin-bottom: var(--sp-2xl); line-height: 1.8;
   max-width: 360px; margin-left: auto; margin-right: auto;
 }
@@ -1744,7 +1744,7 @@ input[type="range"]::-moz-range-thumb {
   text-align: center;
 }
 .email-gate-form input[type="email"]:focus { border-color: var(--accent); }
-.email-gate-form input[type="email"]::placeholder { color: var(--text-muted); }
+.email-gate-form input[type="email"]::placeholder { color: #9B9CA1; }
 .email-gate-error {
   color: var(--color-danger); font-size: 12px;
   margin: 0;
@@ -1752,7 +1752,7 @@ input[type="range"]::-moz-range-thumb {
 .email-gate-opt-in {
   align-self: center;
   display: flex; align-items: baseline; gap: var(--sp-sm);
-  text-align: start; color: var(--text-secondary); font-size: 14px;
+  text-align: start; color: var(--text-primary); font-size: 14px;
 }
 .email-gate-opt-in input { accent-color: var(--accent); }
 
